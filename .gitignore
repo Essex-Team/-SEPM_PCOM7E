@@ -1,4 +1,7 @@
 /.idea
 
-# Ignore Python built cache files
+# Python virtual environment folder
+venv
+
+# Python complied cache directory
 __pycache__
