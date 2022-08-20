@@ -25,12 +25,18 @@ class Texts(GameObject):
         self.color = color
         self.is_bold = is_bold
 
-    def display(self, surface: pg.surface.Surface):
         font = pg.font.SysFont(self.font, self.font_size)
         font.set_bold(self.is_bold)
 
-        text = font.render(self.text, True, self.color)
-        text_rect = text.get_rect()
-        
-        text_rect.center = (self.coordinate_x, self.coordinate_y)
-        surface.blit(text, text_rect)
+        text_surface = font.render(self.text, True, self.color)
+        text_rect = text_surface.get_rect()
+
+        self.text_surface: pg.surface.Surface = text_surface
+        self.text_rect: pg.Rect  = text_rect
+
+    def display(self, surface: pg.surface.Surface):
+        self.text_rect.center = (self.coordinate_x, self.coordinate_y)
+        surface.blit(self.text_surface, self.text_rect)
+
+    def check_has_user_clicked(self, event: pg.event.Event):
+        return event.type == pg.MOUSEBUTTONDOWN and event.button == 1 and self.text_rect.collidepoint(event.pos)
