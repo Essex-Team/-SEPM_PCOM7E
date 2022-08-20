@@ -56,7 +56,8 @@ class Character(GameObject):
                 sprites.append(_single_sprite)
 
             anim = pyganim.PygAnimation(sprites)
-            if animation_speed:
+
+            if animation_speed is not None:
                 anim._rate = animation_speed
 
             if state == 'idle':
@@ -75,13 +76,16 @@ class Character(GameObject):
             self.current_animations = self.take_hit_animation
 
         self.rect = self.current_animations.getRect()
-        self.rect.topleft = (self.rect.x, self.rect.y)
+        self.rect.topleft = (self.coordinate_x, self.coordinate_y)
         self.current_animations.play()
 
-        self.current_animations.blit(surface, (self.rect.x, self.rect.y))
+        self.current_animations.blit(surface, (self.coordinate_x, self.coordinate_y))
 
     def attack(self):
         self.state = 'attack'
 
     def idle(self):
         self.state = 'idle'
+
+    def take_hit(self):
+        self.state = 'take_hit'
