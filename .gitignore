@@ -5,3 +5,6 @@ venv
 
 # Python complied cache directory
 __pycache__
+
+# Temporary directory
+temp

@@ -2,6 +2,7 @@ import pygame as pg
 from .Screen import Screen
 from python_lib.constants import Constants
 from python_lib.components.Texts import Texts
+from python_lib.screens.ParentControlScreen import ParentControlScreen
 
 class SettingsScreen(Screen):
 
@@ -13,6 +14,13 @@ class SettingsScreen(Screen):
             screen_width=Constants.SCREEN_WIDTH,
             screen_height=Constants.SCREEN_HEIGHT,
         )
+
+    def show_parent_control_screen(self):
+        parent_control_screen: ParentControlScreen = ParentControlScreen(
+            window=self.window,
+            clock=self.clock,
+        )
+        parent_control_screen.display()
 
     def display(self):
         running = True
@@ -33,6 +41,20 @@ class SettingsScreen(Screen):
 
             settings_text_view.display(surface=self.window)
 
+            parent_control_text_view = Texts(
+                coordinate_x=Constants.SCREEN_WIDTH // 2,
+                coordinate_y=Constants.SCREEN_HEIGHT - 260,
+                state='ready',
+                text_id='parent_control_text_component',
+                text='PARENT CONTROL',
+                color=Constants.BLACK,
+                font=Constants.FONT,
+                font_size=Constants.NORMAL_FONT_SIZE,
+                is_bold=True,
+            )
+
+            parent_control_text_view.display(surface=self.window)
+
             back_to_main_text_view = Texts(
                 coordinate_x=Constants.SCREEN_WIDTH // 2,
                 coordinate_y=Constants.SCREEN_HEIGHT - 220,
@@ -47,9 +69,25 @@ class SettingsScreen(Screen):
 
             back_to_main_text_view.display(surface=self.window)
 
+            footer = Texts(
+                coordinate_x=Constants.SCREEN_WIDTH // 2,
+                coordinate_y=Constants.SCREEN_HEIGHT - 100,
+                state='ready',
+                text_id='footer_text_component',
+                text='Team 1, Software Engineering Project Management @ 2022',
+                color=Constants.BLACK,
+                font=Constants.FONT,
+                font_size=Constants.SMALL_FONT_SIZE,
+            )
+
+            footer.display(surface=self.window)
+
             for event in pg.event.get():
                 if event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
                     running = False
+
+                if parent_control_text_view.check_has_user_clicked(event):
+                    self.show_parent_control_screen()
 
                 if back_to_main_text_view.check_has_user_clicked(event):
                     running = False
