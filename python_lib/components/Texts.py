@@ -13,7 +13,8 @@ class Texts(GameObject):
         text: str,
         color: str,
         font: str=Constants.FONT,
-        font_size: int =Constants.NORMAL_FONT_SIZE,
+        font_size: int=Constants.NORMAL_FONT_SIZE,
+        is_bold: bool=False,
         animations=None,
     ):
         super().__init__(coordinate_x=coordinate_x, coordinate_y=coordinate_y, state=state, animations=animations)
@@ -22,11 +23,13 @@ class Texts(GameObject):
         self.font = font
         self.font_size = font_size
         self.color = color
+        self.is_bold = is_bold
 
     def display(self, surface: pg.surface.Surface):
         font = pg.font.SysFont(self.font, self.font_size)
-        text = font.render(self.text, True, self.color)
+        font.set_bold(self.is_bold)
 
+        text = font.render(self.text, True, self.color)
         text_rect = text.get_rect()
         
         text_rect.center = (self.coordinate_x, self.coordinate_y)

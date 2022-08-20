@@ -16,5 +16,5 @@ class Constants:
     WHITE = (255, 255, 255)
 
     # Screen information
-    SCREEN_WIDTH = 400
+    SCREEN_WIDTH = 800
     SCREEN_HEIGHT = 600
