@@ -15,8 +15,8 @@ class Button(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
         # self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-        self.clicked_sound = pygame.mixer.Sound("assets/sounds/buttons/button_clicked.wav")
-        self.hovered_sound = pygame.mixer.Sound("assets/sounds/buttons/button_hovered.wav")
+        self.clicked_sound = pygame.mixer.Sound("../../assets/sounds/buttons/button_clicked.wav")
+        self.hovered_sound = pygame.mixer.Sound("../../assets/sounds/buttons/button_hovered.wav")
         self.clicked_sound.set_volume(0.06)
         self.hovered_sound.set_volume(0.06)
         self.is_previously_hovered = False
