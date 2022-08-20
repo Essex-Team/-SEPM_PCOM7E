@@ -16,6 +16,7 @@ WINDOW_TITLE = "Pygame Game"
 pygame.init()
 window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption(WINDOW_TITLE)
+font = pygame.font.Font('../../assets/fonts/pixel/PixelEmulator-xq08.ttf', 14)
 
 # Set window background to white
 window.fill((0, 0, 0))
@@ -111,13 +112,15 @@ characters.add(player)
 # Game Mechanics
 class Engine:
     def __init__(self):
-        self.is_correct = False
+        self.player_is_correct = False
+        self.is_player_turn = True
         self.dice_1 = 0
         self.dice_2 = 0
         self.dice_sum = 0
         self.player_choice = None
         self.player_health = 100
         self.enemy_health = 100
+        self.there_was_an_event = False
 
 
 engine = Engine()
@@ -129,6 +132,8 @@ def calculate_bet(choices):
     tier_2 = ['odd', 'even']
     correct = False
     engine.player_choice = choices
+
+    engine.there_was_an_event = True
 
     crit_bonus = 0
     engine.dice_1 = random.randint(1, 6)
@@ -150,9 +155,10 @@ def calculate_bet(choices):
 
     print(engine.dice_1, engine.dice_2, engine.dice_sum, engine.player_choice)
 
-    engine.is_correct = correct
+    if engine.is_player_turn:
+        engine.player_is_correct = correct
 
-    if engine.is_correct:
+    if engine.player_is_correct:
         print("Correct!")
     else:
         print("Incorrect!")
@@ -179,12 +185,21 @@ if __name__ == '__main__':
         # window.fill(0)
         window.fill(Constants.WHITE)
 
-        there_was_an_event = False
+        if engine.is_player_turn:
+            text = "Player's Turn"
+        else:
+            text = "Enemy's Turn"
 
-        if engine.is_correct:
+        # Turn information
+        turn_text = font.render(text, True, Constants.BLACK)
+        textRect = turn_text.get_rect()
+        textRect.center = (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 10)
+
+        if engine.is_player_turn and engine.player_is_correct:
             player.attack()
             time_of_event = datetime.now()
-            engine.is_correct = False
+            engine.there_was_an_event = True
+            engine.player_is_correct = False
 
         if time_of_event is not None:
             second_diff = (datetime.now() - time_of_event).total_seconds()
@@ -192,6 +207,10 @@ if __name__ == '__main__':
                 player.current_animations.stop()
                 time_of_event = None
                 player.idle()
+
+        if engine.there_was_an_event:
+            engine.is_player_turn = not engine.is_player_turn
+            engine.there_was_an_event = False
 
         for i in battle_buttons:
             if i.is_visible:
@@ -203,5 +222,6 @@ if __name__ == '__main__':
 
         # Update game state
         # Draw game state
+        window.blit(turn_text, textRect)
         pygame.display.update()
         pygame.time.Clock().tick(30)
