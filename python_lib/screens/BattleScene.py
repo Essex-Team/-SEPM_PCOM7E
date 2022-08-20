@@ -117,7 +117,55 @@ player = Character(
     slower=True
 )
 
+player.take_hit_sound = pygame.mixer.Sound('../../assets/sounds/misc/player_take_hit.wav')
+
+enemy = Character(
+    coordinate_x=250,
+    coordinate_y=90,
+    animations={
+        "idle": {
+            "images": [
+                '../../assets/images/character/enemy_idle_0.png',
+                '../../assets/images/character/enemy_idle_1.png',
+                '../../assets/images/character/enemy_idle_2.png',
+                '../../assets/images/character/enemy_idle_3.png'
+            ],
+            "duration_in_seconds": 4,
+            "scale": 2,
+            "flipped": True,
+            "animation_speed": 0.5
+        },
+        "attack": {
+            "images": [
+                '../../assets/images/character/enemy_attack_0.png',
+                '../../assets/images/character/enemy_attack_1.png',
+                '../../assets/images/character/enemy_attack_2.png',
+                '../../assets/images/character/enemy_attack_3.png'
+            ],
+            "duration_in_seconds": 4,
+            "scale": 2,
+            "flipped": True,
+            "animation_speed": 0.5
+        },
+        "take_hit": {
+            "images": [
+                '../../assets/images/character/enemy_take_hit_0.png',
+                '../../assets/images/character/enemy_take_hit_1.png',
+                '../../assets/images/character/enemy_take_hit_2.png',
+            ],
+            "duration_in_seconds": 4,
+            "scale": 2,
+            "flipped": True,
+            "animation_speed": 0.5
+        }
+    },
+    slower=True
+)
+
+enemy.take_hit_sound = pygame.mixer.Sound('../../assets/sounds/misc/enemy_take_hit.wav')
+
 characters.add(player)
+characters.add(enemy)
 
 
 # Game Mechanics
@@ -134,6 +182,14 @@ class Engine:
         self.player_health = 100
         self.enemy_health = 100
         self.there_was_an_event = False
+
+        self.parry_sound = pygame.mixer.Sound('../../assets/sounds/misc/parry.wav')
+
+    def update(self):
+        if self.player_is_correct is True and self.enemy_is_correct is True:
+            self.parry_sound.play()
+            self.player_is_correct = False
+            self.enemy_is_correct = False
 
 
 engine = Engine()
@@ -176,16 +232,13 @@ def calculate_bet(choices):
     # Combine player and enemy result
 
     damage = 0
-    if engine.is_player_turn:
-        if engine.player_is_correct:
-            if not engine.enemy_is_correct:
-                damage = 10
-        engine.enemy_health -= damage
+
+    if engine.player_is_correct:
+        if not engine.enemy_is_correct:
+            engine.enemy_health -= 10
     else:
         if engine.enemy_is_correct:
-            if not engine.player_is_correct:
-                damage = 10
-        engine.player_health -= damage
+            engine.player_health -= 10
 
     for i in battle_buttons:
         if i.button_id in tier_1:
@@ -242,16 +295,32 @@ if __name__ == '__main__':
         enemy_health_text_rect = enemy_health_text.get_rect()
         enemy_health_text_rect.topright = (WINDOW_WIDTH / 4 * 3, WINDOW_HEIGHT / 15)
 
-        if engine.is_player_turn:
-            if engine.player_is_correct:
-                player.attack()
-                time_of_event = datetime.now()
-                engine.player_is_correct = False
-        elif not engine.is_player_turn:
-            if engine.enemy_is_correct:
-                player.take_hit()
+        if engine.player_is_correct is True:
+            player.current_animations.stop()
+            enemy.current_animations.stop()
+            player.attack()
+
+            if engine.enemy_is_correct is True:
+                enemy.attack()
+            else:
+                enemy.take_hit()
+
+            time_of_event = datetime.now()
+            engine.player_is_correct = False
+            engine.enemy_is_correct = False
+        else:
+            if engine.enemy_is_correct is True:
+                enemy.current_animations.stop()
+                enemy.attack()
+
+                if engine.player_is_correct is True:
+                    player.attack()
+                else:
+                    player.take_hit()
+
                 time_of_event = datetime.now()
                 engine.enemy_is_correct = False
+                engine.player_is_correct = False
 
         if time_of_event is not None:
             second_diff = (datetime.now() - time_of_event).total_seconds()
@@ -259,6 +328,7 @@ if __name__ == '__main__':
                 player.current_animations.stop()
                 time_of_event = None
                 player.idle()
+                enemy.idle()
 
         if engine.there_was_an_event:
             engine.there_was_an_event = False
@@ -277,4 +347,8 @@ if __name__ == '__main__':
         window.blit(player_health_text, player_health_text_rect)
         window.blit(enemy_health_text, enemy_health_text_rect)
         pygame.display.update()
+        engine.update()
         pygame.time.Clock().tick(30)
+
+        if engine.enemy_health <= 0 or engine.player_health <= 0:
+            done = True

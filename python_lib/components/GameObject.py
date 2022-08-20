@@ -32,8 +32,12 @@ class Character(GameObject):
         # self.rect.bottomleft = (coordinate_x, coordinate_y)
         super().__init__(coordinate_x, coordinate_y, animations)
 
-    def get_image(self, image, scale=1):
+        self.take_hit_sound=None
+
+    def get_image(self, image, flipped=False, scale=1):
         _image = pygame.image.load(image).convert_alpha()
+        if flipped:
+            _image = pygame.transform.flip(_image, True, False)
         width = _image.get_width()
         height = _image.get_height()
         _image = pygame.transform.smoothscale(_image, (int(width * scale), int(height * scale)))
@@ -48,10 +52,11 @@ class Character(GameObject):
             duration_in_seconds = data.get('duration_in_seconds')
             scale = data.get('scale')
             animation_speed = data.get('animation_speed')
+            flipped = data.get("flipped", False)
             sprites = list()
             for _image in data['images']:
                 _single_sprite = (
-                    self.get_image(image=_image, scale=scale), duration_in_seconds
+                    self.get_image(image=_image, flipped=flipped, scale=scale), duration_in_seconds
                 )
                 sprites.append(_single_sprite)
 
@@ -89,3 +94,4 @@ class Character(GameObject):
 
     def take_hit(self):
         self.state = 'take_hit'
+        self.take_hit_sound.play()
