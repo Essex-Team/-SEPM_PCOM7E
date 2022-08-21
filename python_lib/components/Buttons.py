@@ -1,7 +1,8 @@
-import pygame
 import types
+import pygame as pg
+from python_lib.utils import Utils
 
-class Button(pygame.sprite.Sprite):
+class Button(pg.sprite.Sprite):
     def __init__(self, button_id, image_list, x, y, scale=1, show_after_is_pressed=list()):
         super().__init__()
         self.button_id = button_id
@@ -14,9 +15,9 @@ class Button(pygame.sprite.Sprite):
         self.image = self.get_image(image_list['basic'])
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
-        # self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-        self.clicked_sound = pygame.mixer.Sound("../../assets/sounds/buttons/button_clicked.wav")
-        self.hovered_sound = pygame.mixer.Sound("../../assets/sounds/buttons/button_hovered.wav")
+        # self.rect = pg.Rect(self.x, self.y, self.width, self.height)
+        self.clicked_sound = pg.mixer.Sound(Utils.getAssetPath("sounds/buttons/button_clicked.wav"))
+        self.hovered_sound = pg.mixer.Sound(Utils.getAssetPath("sounds/buttons/button_hovered.wav"))
         self.clicked_sound.set_volume(0.06)
         self.hovered_sound.set_volume(0.06)
         self.is_previously_hovered = False
@@ -28,28 +29,28 @@ class Button(pygame.sprite.Sprite):
         self.update()
 
     def get_image(self, image):
-        return pygame.transform.scale(image, (int(self.width * self.scale), int(self.height * self.scale)))
+        return pg.transform.scale(image, (int(self.width * self.scale), int(self.height * self.scale)))
 
     def draw(self, surface):
         action = False
         # get mouse position
-        pos = pygame.mouse.get_pos()
+        pos = pg.mouse.get_pos()
 
-        if self.rect.collidepoint(pygame.mouse.get_pos()):
+        if self.rect.collidepoint(pg.mouse.get_pos()):
             self.is_previously_hovered = self.is_hovered
             self.is_hovered = True
 
             if self.is_hovered and not self.is_previously_hovered:
                 self.hovered_sound.play()
 
-            if pygame.mouse.get_pressed()[0] == 1 and self.is_clicked is False:
+            if pg.mouse.get_pressed()[0] == 1 and self.is_clicked is False:
                 self.is_clicked = True
             else:
                 self.is_clicked = False
         else:
             self.is_hovered = False
 
-        if pygame.mouse.get_pressed()[0] == 0:
+        if pg.mouse.get_pressed()[0] == 0:
             self.is_clicked = False
 
         if self.is_hovered:

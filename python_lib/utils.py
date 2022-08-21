@@ -23,3 +23,8 @@ class Utils:
         with open(os.path.join(temp_dir, filename), 'r+', encoding='utf-8') as f:
             data = json.load(f)
         return data
+
+    @staticmethod
+    def getAssetPath(filename: str) -> str:
+        root_dir = os.path.abspath(os.curdir)
+        return os.path.join(root_dir, f'assets/{filename}')
