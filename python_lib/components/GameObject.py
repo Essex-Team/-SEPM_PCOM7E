@@ -1,9 +1,9 @@
-import pygame as pg
+import pygame
 
-class GameObject(pg.sprite.Sprite):
+class GameObject(pygame.sprite.Sprite):
 
-    def __init__(self, coordinate_x: float, coordinate_y: float, state: str, animations=None):
+    def __init__(self, coordinate_x: float, coordinate_y: float, animations=None):
         self.coordinate_x = coordinate_x
         self.coordinate_y = coordinate_y
-        self.state = state
         self.animations = animations
+        pygame.sprite.Sprite.__init__(self)
