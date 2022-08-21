@@ -24,6 +24,7 @@ class Constants:
 
     # Game Settings
     TIME_LIMIT_JSON_FILENAME = "time_limit.json"
+    INDICATOR_SOUND_JSON_FILENAME = "indicator_sound.json"
 
     # Text View Settings
     TEXT_COLOR = BLACK

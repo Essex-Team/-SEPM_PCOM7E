@@ -267,8 +267,6 @@ class SetTimeLimitScreen(Screen):
             points=end_time_down_arrow_points,
         )
 
-        # end_time_down_arrow.display(surface=self.window)
-
         text_view_list = [
             set_time_limit_text_view,
             between_text_view,
