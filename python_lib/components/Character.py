@@ -1,7 +1,7 @@
 import pygame
 import pyganim
 
-from .GameObject import GameObject
+from python_lib.components.GameObject import GameObject
 
 class Character(GameObject):
 

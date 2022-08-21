@@ -9,13 +9,12 @@ class Arrows(GameObject):
         self,
         coordinate_x: float,
         coordinate_y: float,
-        state: str,
         arrow_id: str,
         color: Tuple[int, int, int],
         points: Sequence[Union[Tuple[float, float], Sequence[float], Vector2]],
         animations=None,
     ):
-        super().__init__(coordinate_x=coordinate_x, coordinate_y=coordinate_y, state=state, animations=animations)
+        super().__init__(coordinate_x=coordinate_x, coordinate_y=coordinate_y, animations=animations)
         self.arrow_id = arrow_id
         self.color = color
         self.points = points

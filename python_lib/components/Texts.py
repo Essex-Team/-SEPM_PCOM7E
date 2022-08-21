@@ -8,7 +8,6 @@ class Texts(GameObject):
         self,
         coordinate_x: float,
         coordinate_y: float,
-        state: str,
         text_id: str,
         text: str,
         color: str,
@@ -17,7 +16,7 @@ class Texts(GameObject):
         is_bold: bool=False,
         animations=None,
     ):
-        super().__init__(coordinate_x=coordinate_x, coordinate_y=coordinate_y, state=state, animations=animations)
+        super().__init__(coordinate_x=coordinate_x, coordinate_y=coordinate_y, animations=animations)
         self.text_id = text_id
         self.text = text
         self.font = font
