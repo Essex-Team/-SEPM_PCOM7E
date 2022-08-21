@@ -44,7 +44,7 @@ class BattleScene(Screen):
         self.initializeGame()
     
     def initializeGame(self):
-        self.font = pg.font.Font(Utils.getAssetPath('fonts/pixel/PixelEmulator-xq08.ttf'), 14)
+        self.font = pg.font.Font(Utils.getAssetPath('fonts/pixel/PixelEmulator-xq08.ttf'), Constants.EXTRA_SMALL_FONT_SIZE)
 
         # Battle Button
         self.battle_buttons = pg.sprite.Group()
