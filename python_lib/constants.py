@@ -1,7 +1,7 @@
 class Constants:
 
     FONT = "Arial"
-    FPS = 30
+    FPS = 15
 
     # Font Size
     EXTRA_LARGE_FONT_SIZE = 48

@@ -181,6 +181,94 @@ class SetTimeLimitScreen(Screen):
             font_size=Constants.SMALL_FONT_SIZE,
         )
 
+        def _handle_start_time_up_arrow_click_event():
+            self.handle_start_time_up_arrow_click()
+            start_time_text_view.text = self.time_limit_form['start_time']
+
+        def _handle_start_time_down_arrow_click_event():
+            self.handle_start_time_down_arrow_click()
+            start_time_text_view.text = self.time_limit_form['start_time']
+
+        def _handle_end_time_up_arrow_click_event():
+            self.handle_end_time_up_arrow_click()
+            end_time_text_view.text = self.time_limit_form['end_time']
+
+        def _handle_end_time_down_arrow_click_event():
+            self.handle_end_time_down_arrow_click()
+            end_time_text_view.text = self.time_limit_form['end_time']
+
+        coordinate_x = Constants.SCREEN_WIDTH // 2 - 100
+        coordinate_y = Constants.SCREEN_HEIGHT - 240
+
+        start_time_up_arrow_points = [
+            (coordinate_x - 20, coordinate_y - 20),
+            (coordinate_x, coordinate_y - 40),
+            (coordinate_x + 20, coordinate_y - 20),
+        ]
+
+        start_time_up_arrow = Arrows(
+            coordinate_x=coordinate_x,
+            coordinate_y=coordinate_y,
+            arrow_id='start_time_up_arrow_component',
+            color=Constants.TEXT_COLOR,
+            high_light_color=Constants.TEXT_HIGH_LIGHT_COLOR,
+            on_click_event=_handle_start_time_up_arrow_click_event,
+            points=start_time_up_arrow_points,
+        )
+
+        start_time_down_arrow_points = [
+            (coordinate_x - 20, coordinate_y + 20),
+            (coordinate_x, coordinate_y + 40),
+            (coordinate_x + 20, coordinate_y + 20),
+        ]
+
+        start_time_down_arrow = Arrows(
+            coordinate_x=coordinate_x,
+            coordinate_y=coordinate_y,
+            arrow_id='start_time_down_arrow_component',
+            color=Constants.TEXT_COLOR,
+            high_light_color=Constants.TEXT_HIGH_LIGHT_COLOR,
+            on_click_event=_handle_start_time_down_arrow_click_event,
+            points=start_time_down_arrow_points,
+        )
+
+        coordinate_x = Constants.SCREEN_WIDTH // 2 + 100
+        coordinate_y = Constants.SCREEN_HEIGHT - 240
+
+        end_time_up_arrow_points = [
+            (coordinate_x - 20, coordinate_y - 20),
+            (coordinate_x, coordinate_y - 40),
+            (coordinate_x + 20, coordinate_y - 20),
+        ]
+
+        end_time_up_arrow = Arrows(
+            coordinate_x=coordinate_x,
+            coordinate_y=coordinate_y,
+            arrow_id='end_time_up_arrow_component',
+            color=Constants.TEXT_COLOR,
+            high_light_color=Constants.TEXT_HIGH_LIGHT_COLOR,
+            on_click_event=_handle_end_time_up_arrow_click_event,
+            points=end_time_up_arrow_points,
+        )
+
+        end_time_down_arrow_points = [
+            (coordinate_x - 20, coordinate_y + 20),
+            (coordinate_x, coordinate_y + 40),
+            (coordinate_x + 20, coordinate_y + 20),
+        ]
+
+        end_time_down_arrow = Arrows(
+            coordinate_x=coordinate_x,
+            coordinate_y=coordinate_y,
+            arrow_id='end_time_down_arrow_component',
+            color=Constants.TEXT_COLOR,
+            high_light_color=Constants.TEXT_HIGH_LIGHT_COLOR,
+            on_click_event=_handle_end_time_down_arrow_click_event,
+            points=end_time_down_arrow_points,
+        )
+
+        # end_time_down_arrow.display(surface=self.window)
+
         text_view_list = [
             set_time_limit_text_view,
             between_text_view,
@@ -190,112 +278,37 @@ class SetTimeLimitScreen(Screen):
             cancel_text_view,
             footer,
         ]
+        
+        start_time_arrow_view_list = [
+            start_time_up_arrow,
+            start_time_down_arrow,
+        ]
+
+        end_time_arrow_view_list = [
+            end_time_up_arrow,
+            end_time_down_arrow,
+        ]
 
         while self.is_running:
             self.window.fill(Constants.WHITE)
-
-            start_time_up_arrow = None
-            start_time_down_arrow = None
-
-            end_time_up_arrow = None
-            end_time_down_arrow = None
-
-            if self.should_display_start_time_arrows:
-                coordinate_x = Constants.SCREEN_WIDTH // 2 - 100
-                coordinate_y = Constants.SCREEN_HEIGHT - 240
-
-                start_time_up_arrow_points = [
-                    (coordinate_x - 20, coordinate_y - 20),
-                    (coordinate_x, coordinate_y - 40),
-                    (coordinate_x + 20, coordinate_y - 20),
-                ]
-
-                start_time_up_arrow = Arrows(
-                    coordinate_x=coordinate_x,
-                    coordinate_y=coordinate_y,
-                    arrow_id='start_time_up_arrow_component',
-                    color=Constants.TEXT_COLOR,
-                    points=start_time_up_arrow_points,
-                )
-
-                start_time_up_arrow.display(surface=self.window)
-
-                start_time_down_arrow_points = [
-                    (coordinate_x - 20, coordinate_y + 20),
-                    (coordinate_x, coordinate_y + 40),
-                    (coordinate_x + 20, coordinate_y + 20),
-                ]
-
-                start_time_down_arrow = Arrows(
-                    coordinate_x=coordinate_x,
-                    coordinate_y=coordinate_y,
-                    arrow_id='start_time_down_arrow_component',
-                    color=Constants.TEXT_COLOR,
-                    points=start_time_down_arrow_points,
-                )
-
-                start_time_down_arrow.display(surface=self.window)
-
-            
-            if self.should_display_end_time_arrows:
-                coordinate_x = Constants.SCREEN_WIDTH // 2 + 100
-                coordinate_y = Constants.SCREEN_HEIGHT - 240
-
-                end_time_up_arrow_points = [
-                    (coordinate_x - 20, coordinate_y - 20),
-                    (coordinate_x, coordinate_y - 40),
-                    (coordinate_x + 20, coordinate_y - 20),
-                ]
-
-                end_time_up_arrow = Arrows(
-                    coordinate_x=coordinate_x,
-                    coordinate_y=coordinate_y,
-                    arrow_id='end_time_up_arrow_component',
-                    color=Constants.TEXT_COLOR,
-                    points=end_time_up_arrow_points,
-                )
-
-                end_time_up_arrow.display(surface=self.window)
-
-                end_time_down_arrow_points = [
-                    (coordinate_x - 20, coordinate_y + 20),
-                    (coordinate_x, coordinate_y + 40),
-                    (coordinate_x + 20, coordinate_y + 20),
-                ]
-
-                end_time_down_arrow = Arrows(
-                    coordinate_x=coordinate_x,
-                    coordinate_y=coordinate_y,
-                    arrow_id='end_time_down_arrow_component',
-                    color=Constants.TEXT_COLOR,
-                    points=end_time_down_arrow_points,
-                )
-
-                end_time_down_arrow.display(surface=self.window)
 
             for text_view in text_view_list:
                 text_view.display(surface=self.window)
                 text_view.update()
 
+            if self.should_display_start_time_arrows:
+                for arrow_view in start_time_arrow_view_list:
+                    arrow_view.display(surface=self.window)
+                    arrow_view.update()
+
+            if self.should_display_end_time_arrows:
+                for arrow_view in end_time_arrow_view_list:
+                    arrow_view.display(surface=self.window)
+                    arrow_view.update()
+
             for event in pg.event.get():
                 if event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
                     self.exit()
-
-                if start_time_up_arrow is not None and start_time_up_arrow.check_has_user_clicked(event):
-                    self.handle_start_time_up_arrow_click()
-                    start_time_text_view.text = self.time_limit_form['start_time']
-
-                if start_time_down_arrow is not None and start_time_down_arrow.check_has_user_clicked(event):
-                    self.handle_start_time_down_arrow_click()
-                    start_time_text_view.text = self.time_limit_form['start_time']
-
-                if end_time_up_arrow is not None and end_time_up_arrow.check_has_user_clicked(event):
-                    self.handle_end_time_up_arrow_click()
-                    end_time_text_view.text = self.time_limit_form['end_time']
-
-                if end_time_down_arrow is not None and end_time_down_arrow.check_has_user_clicked(event):
-                    self.handle_end_time_down_arrow_click()
-                    end_time_text_view.text = self.time_limit_form['end_time']
 
             pg.display.update()
             self.clock.tick(Constants.FPS)
