@@ -17,7 +17,7 @@ class MainMenuScreen(Screen):
             screen_height=Constants.SCREEN_HEIGHT,
         )
         self.window.fill(Constants.WHITE)
-        self.click = False
+        self.is_running = True
 
     def show_start_screen(self):
         start_screen: StartScreen = StartScreen(
@@ -38,86 +38,85 @@ class MainMenuScreen(Screen):
         sys.exit()
 
     def display(self):
-        while True:
+        welcome_text_view = Texts(
+            coordinate_x=Constants.SCREEN_WIDTH // 2,
+            coordinate_y=Constants.SCREEN_HEIGHT // 3,
+            text_id='welcome_text_component',
+            text='GAME TITLE',
+            color=Constants.TEXT_COLOR,
+            font=Constants.FONT,
+            font_size=Constants.LARGE_FONT_SIZE,
+            is_bold=True,
+        )
+
+        start_text_view = Texts(
+            coordinate_x=Constants.SCREEN_WIDTH // 2,
+            coordinate_y=Constants.SCREEN_HEIGHT - 300,
+            text_id='start_text_component',
+            text='START',
+            color=Constants.TEXT_COLOR,
+            high_light_color=Constants.TEXT_HIGH_LIGHT_COLOR,
+            on_click_event=self.show_start_screen,
+            font=Constants.FONT,
+            font_size=Constants.NORMAL_FONT_SIZE,
+            is_bold=True,
+        )
+
+        settings_text_view = Texts(
+            coordinate_x=Constants.SCREEN_WIDTH // 2,
+            coordinate_y=Constants.SCREEN_HEIGHT - 260,
+            text_id='settings_text_component',
+            text='SETTINGS',
+            color=Constants.TEXT_COLOR,
+            high_light_color=Constants.TEXT_HIGH_LIGHT_COLOR,
+            on_click_event=self.show_settings_screen,
+            font=Constants.FONT,
+            font_size=Constants.NORMAL_FONT_SIZE,
+            is_bold=True,
+        )
+
+        exit_text_view = Texts(
+            coordinate_x=Constants.SCREEN_WIDTH // 2,
+            coordinate_y=Constants.SCREEN_HEIGHT - 220,
+            text_id='exit_text_component',
+            text='EXIT',
+            color=Constants.TEXT_COLOR,
+            high_light_color=Constants.TEXT_HIGH_LIGHT_COLOR,
+            on_click_event=self.exit,
+            font=Constants.FONT,
+            font_size=Constants.NORMAL_FONT_SIZE,
+            is_bold=True,
+        )
+
+        footer = Texts(
+            coordinate_x=Constants.SCREEN_WIDTH // 2,
+            coordinate_y=Constants.SCREEN_HEIGHT - 100,
+            text_id='footer_text_component',
+            text='Team 1, Software Engineering Project Management @ 2022',
+            color=Constants.TEXT_COLOR,
+            font=Constants.FONT,
+            font_size=Constants.SMALL_FONT_SIZE,
+        )
+
+        text_view_list = [
+            welcome_text_view,
+            start_text_view,
+            settings_text_view,
+            exit_text_view,
+            footer,
+        ]
+
+        while self.is_running:
             self.window.fill(Constants.WHITE)
 
-            welcome_text_view = Texts(
-                coordinate_x=Constants.SCREEN_WIDTH // 2,
-                coordinate_y=Constants.SCREEN_HEIGHT // 3,
-                text_id='welcome_text_component',
-                text='GAME TITLE',
-                color=Constants.BLACK,
-                font=Constants.FONT,
-                font_size=Constants.LARGE_FONT_SIZE,
-                is_bold=True,
-            )
-
-            welcome_text_view.display(surface=self.window)
-
-            start_text_view = Texts(
-                coordinate_x=Constants.SCREEN_WIDTH // 2,
-                coordinate_y=Constants.SCREEN_HEIGHT - 300,
-                text_id='start_text_component',
-                text='START',
-                color=Constants.BLACK,
-                font=Constants.FONT,
-                font_size=Constants.NORMAL_FONT_SIZE,
-                is_bold=True,
-            )
-
-            start_text_view.display(surface=self.window)
-
-            settings_text_view = Texts(
-                coordinate_x=Constants.SCREEN_WIDTH // 2,
-                coordinate_y=Constants.SCREEN_HEIGHT - 260,
-                text_id='settings_text_component',
-                text='SETTINGS',
-                color=Constants.BLACK,
-                font=Constants.FONT,
-                font_size=Constants.NORMAL_FONT_SIZE,
-                is_bold=True,
-            )
-
-            settings_text_view.display(surface=self.window)
-
-            exit_text_view = Texts(
-                coordinate_x=Constants.SCREEN_WIDTH // 2,
-                coordinate_y=Constants.SCREEN_HEIGHT - 220,
-                text_id='exit_text_component',
-                text='EXIT',
-                color=Constants.BLACK,
-                font=Constants.FONT,
-                font_size=Constants.NORMAL_FONT_SIZE,
-                is_bold=True,
-            )
-
-            exit_text_view.display(surface=self.window)
-
-            footer = Texts(
-                coordinate_x=Constants.SCREEN_WIDTH // 2,
-                coordinate_y=Constants.SCREEN_HEIGHT - 100,
-                text_id='footer_text_component',
-                text='Team 1, Software Engineering Project Management @ 2022',
-                color=Constants.BLACK,
-                font=Constants.FONT,
-                font_size=Constants.SMALL_FONT_SIZE,
-            )
-
-            footer.display(surface=self.window)
+            for text_view in text_view_list:
+                text_view.display(surface=self.window)
+                text_view.update()
 
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     pg.quit()
                     sys.exit()
-
-                if start_text_view.check_has_user_clicked(event):
-                    self.show_start_screen()
-
-                if settings_text_view.check_has_user_clicked(event):
-                    self.show_settings_screen()
-
-                if exit_text_view.check_has_user_clicked(event):
-                    self.exit()
 
             pg.display.update()
             self.clock.tick(Constants.FPS)

@@ -16,12 +16,24 @@ class SetTimeLimitScreen(Screen):
             screen_width=Constants.SCREEN_WIDTH,
             screen_height=Constants.SCREEN_HEIGHT,
         )
+        self.is_running = True
+        self.should_display_start_time_arrows = False
+        self.should_display_end_time_arrows = False
         self.time_limit_form = {
             "start_time": "00:00",
             "end_time": "00:00",
         }
         self.load_time_limit_from_json()
         self.generate_time_options()
+
+    def exit(self):
+        self.is_running = False
+
+    def toggle_start_time_arrows(self):
+        self.should_display_start_time_arrows = not self.should_display_start_time_arrows
+
+    def toggle_end_time_arrows(self):
+        self.should_display_end_time_arrows = not self.should_display_end_time_arrows
 
     def generate_time_options(self):
         start = datetime(1900,1,1,0,0,0)
@@ -82,51 +94,105 @@ class SetTimeLimitScreen(Screen):
         previous_end_time = self.get_next_available_option(end_time, is_up=False)
         self.time_limit_form['end_time'] = previous_end_time
 
+    def handle_on_confirm_click(self):
+        self.handle_save_time_limit_to_json()
+        self.exit()
+
+    def handle_on_cancel_click(self):
+        self.exit()
+
     def display(self):
-        running = True
-        
-        should_display_start_time_arrows = False
-        should_display_end_time_arrows = False
+        set_time_limit_text_view = Texts(
+            coordinate_x=Constants.SCREEN_WIDTH // 2,
+            coordinate_y=Constants.SCREEN_HEIGHT // 3,
+            text_id='set_time_limit_text_component',
+            text='SET TIME LIMIT',
+            color=Constants.TEXT_COLOR,
+            font=Constants.FONT,
+            font_size=Constants.LARGE_FONT_SIZE,
+            is_bold=True,
+        )
 
-        while running:
+        between_text_view = Texts(
+            coordinate_x=Constants.SCREEN_WIDTH // 2,
+            coordinate_y=Constants.SCREEN_HEIGHT - 300,
+            text_id='between_text_component',
+            text='BETWEEN',
+            color=Constants.TEXT_COLOR,
+            font=Constants.FONT,
+            font_size=Constants.NORMAL_FONT_SIZE,
+        )
+
+        start_time_text_view = Texts(
+            coordinate_x=Constants.SCREEN_WIDTH // 2 - 100,
+            coordinate_y=Constants.SCREEN_HEIGHT - 240,
+            text_id='start_time_text_component',
+            text=self.time_limit_form['start_time'],
+            color=Constants.TEXT_COLOR,
+            high_light_color=Constants.TEXT_HIGH_LIGHT_COLOR,
+            on_click_event=self.toggle_start_time_arrows,
+            font=Constants.FONT,
+            font_size=Constants.NORMAL_FONT_SIZE,
+        )
+
+        end_time_text_view = Texts(
+            coordinate_x=Constants.SCREEN_WIDTH // 2 + 100,
+            coordinate_y=Constants.SCREEN_HEIGHT - 240,
+            text_id='end_time_text_component',
+            text=self.time_limit_form['end_time'],
+            color=Constants.TEXT_COLOR,
+            high_light_color=Constants.TEXT_HIGH_LIGHT_COLOR,
+            on_click_event=self.toggle_end_time_arrows,
+            font=Constants.FONT,
+            font_size=Constants.NORMAL_FONT_SIZE,
+        )
+
+        confirm_text_view = Texts(
+            coordinate_x=Constants.SCREEN_WIDTH // 2 - 200,
+            coordinate_y=Constants.SCREEN_HEIGHT - 180,
+            text_id='confirm_text_component',
+            text='CONFIRM',
+            color=Constants.TEXT_COLOR,
+            high_light_color=Constants.TEXT_HIGH_LIGHT_COLOR,
+            on_click_event=self.handle_on_confirm_click,
+            font=Constants.FONT,
+            font_size=Constants.NORMAL_FONT_SIZE,
+        )
+
+        cancel_text_view = Texts(
+            coordinate_x=Constants.SCREEN_WIDTH // 2 + 200,
+            coordinate_y=Constants.SCREEN_HEIGHT - 180,
+            text_id='cancel_text_component',
+            text='CANCEL',
+            color=Constants.TEXT_COLOR,
+            high_light_color=Constants.TEXT_HIGH_LIGHT_COLOR,
+            on_click_event=self.handle_on_cancel_click,
+            font=Constants.FONT,
+            font_size=Constants.NORMAL_FONT_SIZE,
+        )
+
+        footer = Texts(
+            coordinate_x=Constants.SCREEN_WIDTH // 2,
+            coordinate_y=Constants.SCREEN_HEIGHT - 100,
+            text_id='footer_text_component',
+            text='Team 1, Software Engineering Project Management @ 2022',
+            color=Constants.TEXT_COLOR,
+            font=Constants.FONT,
+            font_size=Constants.SMALL_FONT_SIZE,
+        )
+
+        text_view_list = [
+            set_time_limit_text_view,
+            between_text_view,
+            start_time_text_view,
+            end_time_text_view,
+            confirm_text_view,
+            cancel_text_view,
+            footer,
+        ]
+
+        while self.is_running:
             self.window.fill(Constants.WHITE)
-
-            set_time_limit_text_view = Texts(
-                coordinate_x=Constants.SCREEN_WIDTH // 2,
-                coordinate_y=Constants.SCREEN_HEIGHT // 3,
-                text_id='set_time_limit_text_component',
-                text='SET TIME LIMIT',
-                color=Constants.BLACK,
-                font=Constants.FONT,
-                font_size=Constants.LARGE_FONT_SIZE,
-                is_bold=True,
-            )
-
-            set_time_limit_text_view.display(surface=self.window)
-
-            between_text_view = Texts(
-                coordinate_x=Constants.SCREEN_WIDTH // 2,
-                coordinate_y=Constants.SCREEN_HEIGHT - 300,
-                text_id='between_text_component',
-                text='BETWEEN',
-                color=Constants.BLACK,
-                font=Constants.FONT,
-                font_size=Constants.NORMAL_FONT_SIZE,
-            )
-
-            between_text_view.display(surface=self.window)
-
-            start_time_text_view = Texts(
-                coordinate_x=Constants.SCREEN_WIDTH // 2 - 100,
-                coordinate_y=Constants.SCREEN_HEIGHT - 240,
-                text_id='start_time_text_component',
-                text=self.time_limit_form['start_time'],
-                color=Constants.BLACK,
-                font=Constants.FONT,
-                font_size=Constants.NORMAL_FONT_SIZE,
-            )
-
-            start_time_text_view.display(surface=self.window)
 
             start_time_up_arrow = None
             start_time_down_arrow = None
@@ -134,7 +200,7 @@ class SetTimeLimitScreen(Screen):
             end_time_up_arrow = None
             end_time_down_arrow = None
 
-            if should_display_start_time_arrows:
+            if self.should_display_start_time_arrows:
                 coordinate_x = Constants.SCREEN_WIDTH // 2 - 100
                 coordinate_y = Constants.SCREEN_HEIGHT - 240
 
@@ -148,7 +214,7 @@ class SetTimeLimitScreen(Screen):
                     coordinate_x=coordinate_x,
                     coordinate_y=coordinate_y,
                     arrow_id='start_time_up_arrow_component',
-                    color=Constants.BLACK,
+                    color=Constants.TEXT_COLOR,
                     points=start_time_up_arrow_points,
                 )
 
@@ -164,25 +230,14 @@ class SetTimeLimitScreen(Screen):
                     coordinate_x=coordinate_x,
                     coordinate_y=coordinate_y,
                     arrow_id='start_time_down_arrow_component',
-                    color=Constants.BLACK,
+                    color=Constants.TEXT_COLOR,
                     points=start_time_down_arrow_points,
                 )
 
                 start_time_down_arrow.display(surface=self.window)
 
-            end_time_text_view = Texts(
-                coordinate_x=Constants.SCREEN_WIDTH // 2 + 100,
-                coordinate_y=Constants.SCREEN_HEIGHT - 240,
-                text_id='end_time_text_component',
-                text=self.time_limit_form['end_time'],
-                color=Constants.BLACK,
-                font=Constants.FONT,
-                font_size=Constants.NORMAL_FONT_SIZE,
-            )
-
-            end_time_text_view.display(surface=self.window)
-
-            if should_display_end_time_arrows:
+            
+            if self.should_display_end_time_arrows:
                 coordinate_x = Constants.SCREEN_WIDTH // 2 + 100
                 coordinate_y = Constants.SCREEN_HEIGHT - 240
 
@@ -196,7 +251,7 @@ class SetTimeLimitScreen(Screen):
                     coordinate_x=coordinate_x,
                     coordinate_y=coordinate_y,
                     arrow_id='end_time_up_arrow_component',
-                    color=Constants.BLACK,
+                    color=Constants.TEXT_COLOR,
                     points=end_time_up_arrow_points,
                 )
 
@@ -212,76 +267,35 @@ class SetTimeLimitScreen(Screen):
                     coordinate_x=coordinate_x,
                     coordinate_y=coordinate_y,
                     arrow_id='end_time_down_arrow_component',
-                    color=Constants.BLACK,
+                    color=Constants.TEXT_COLOR,
                     points=end_time_down_arrow_points,
                 )
 
                 end_time_down_arrow.display(surface=self.window)
 
-            confirm_text_view = Texts(
-                coordinate_x=Constants.SCREEN_WIDTH // 2 - 200,
-                coordinate_y=Constants.SCREEN_HEIGHT - 180,
-                text_id='confirm_text_component',
-                text='CONFIRM',
-                color=Constants.BLACK,
-                font=Constants.FONT,
-                font_size=Constants.NORMAL_FONT_SIZE,
-            )
-
-            confirm_text_view.display(surface=self.window)
-
-            cancel_text_view = Texts(
-                coordinate_x=Constants.SCREEN_WIDTH // 2 + 200,
-                coordinate_y=Constants.SCREEN_HEIGHT - 180,
-                text_id='cancel_text_component',
-                text='CANCEL',
-                color=Constants.BLACK,
-                font=Constants.FONT,
-                font_size=Constants.NORMAL_FONT_SIZE,
-            )
-
-            cancel_text_view.display(surface=self.window)
-
-            footer = Texts(
-                coordinate_x=Constants.SCREEN_WIDTH // 2,
-                coordinate_y=Constants.SCREEN_HEIGHT - 100,
-                text_id='footer_text_component',
-                text='Team 1, Software Engineering Project Management @ 2022',
-                color=Constants.BLACK,
-                font=Constants.FONT,
-                font_size=Constants.SMALL_FONT_SIZE,
-            )
-
-            footer.display(surface=self.window)
+            for text_view in text_view_list:
+                text_view.display(surface=self.window)
+                text_view.update()
 
             for event in pg.event.get():
                 if event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
-                    running = False
-
-                if start_time_text_view.check_has_user_clicked(event):
-                    should_display_start_time_arrows = not should_display_start_time_arrows
+                    self.exit()
 
                 if start_time_up_arrow is not None and start_time_up_arrow.check_has_user_clicked(event):
                     self.handle_start_time_up_arrow_click()
+                    start_time_text_view.text = self.time_limit_form['start_time']
 
                 if start_time_down_arrow is not None and start_time_down_arrow.check_has_user_clicked(event):
                     self.handle_start_time_down_arrow_click()
+                    start_time_text_view.text = self.time_limit_form['start_time']
 
                 if end_time_up_arrow is not None and end_time_up_arrow.check_has_user_clicked(event):
                     self.handle_end_time_up_arrow_click()
+                    end_time_text_view.text = self.time_limit_form['end_time']
 
                 if end_time_down_arrow is not None and end_time_down_arrow.check_has_user_clicked(event):
                     self.handle_end_time_down_arrow_click()
-
-                if end_time_text_view.check_has_user_clicked(event):
-                    should_display_end_time_arrows = not should_display_end_time_arrows
-
-                if confirm_text_view.check_has_user_clicked(event):
-                    self.handle_save_time_limit_to_json()
-                    running = False
-
-                if cancel_text_view.check_has_user_clicked(event):
-                    running = False
+                    end_time_text_view.text = self.time_limit_form['end_time']
 
             pg.display.update()
             self.clock.tick(Constants.FPS)

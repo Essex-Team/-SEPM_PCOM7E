@@ -1,7 +1,7 @@
 class Constants:
 
     FONT = "Arial"
-    FPS = 60
+    FPS = 30
 
     # Font Size
     EXTRA_LARGE_FONT_SIZE = 48
@@ -13,6 +13,7 @@ class Constants:
     # Setting up color objects
     BLUE = (0, 0, 255)
     RED = (255, 0, 0)
+    YELLOW = (255, 255, 0)
     GREEN = (0, 255, 0)
     BLACK = (0, 0, 0)
     WHITE = (255, 255, 255)
@@ -23,3 +24,7 @@ class Constants:
 
     # Game Settings
     TIME_LIMIT_JSON_FILENAME = "time_limit.json"
+
+    # Text View Settings
+    TEXT_COLOR = BLACK
+    TEXT_HIGH_LIGHT_COLOR = YELLOW
