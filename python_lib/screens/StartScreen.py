@@ -1,8 +1,10 @@
+import datetime
 import pygame as pg
-from .Screen import Screen
+from python_lib.utils import Utils
 from python_lib.constants import Constants
-from python_lib.components.Texts import Texts
+from python_lib.screens.Screen import Screen
 from python_lib.screens.BattleScene import BattleScene
+from python_lib.screens.RestrictionWarningScreen import RestrictionWarningScreen
 
 class StartScreen(Screen):
 
@@ -14,6 +16,32 @@ class StartScreen(Screen):
             screen_width=Constants.SCREEN_WIDTH,
             screen_height=Constants.SCREEN_HEIGHT,
         )
+        self.time_limit_settings = {
+            "start_time": "00:00",
+            "end_time": "00:00",
+        }
+        self.load_time_limit_from_json()
+
+    def load_time_limit_from_json(self):
+        self.time_limit_settings = Utils.loadContentFromJSON(
+            Utils.getAssetPath(f'configs/{Constants.TIME_LIMIT_JSON_FILENAME}')
+        )
+
+    @property
+    def is_playing_game_allowed(self) -> bool:
+        start_time = self.time_limit_settings['start_time']
+        end_time = self.time_limit_settings['end_time']
+
+        if start_time == '00:00' and end_time == '00:00':
+            return True
+
+        current = datetime.datetime.now().time()
+        start = datetime.datetime.strptime(start_time, '%H:%S').time()
+        end = datetime.datetime.strptime(end_time, '%H:%S').time()
+
+        print(start)
+        print(end)
+        return start <= current <= end
     
     def show_battle_scene(self):
         battle_scene: BattleScene = BattleScene(
@@ -22,34 +50,15 @@ class StartScreen(Screen):
         )
         battle_scene.display()
 
-    def show_time_limit_warning_scene(self):
-        pass
+    def show_restriction_warning_screen(self):
+        restriction_warning_screen: RestrictionWarningScreen = RestrictionWarningScreen(
+            window=self.window,
+            clock=self.clock,
+        )
+        restriction_warning_screen.display()
 
     def display(self):
-        # TODO: read the time limit settings here
-        # TODO: only display the battle scene when it is allowed to do so
-        self.show_battle_scene()
-        # running = True
-        # while running:
-
-        #     self.window.fill(Constants.WHITE)
-
-        #     start_text_view = Texts(
-        #         coordinate_x=Constants.SCREEN_WIDTH // 2,
-        #         coordinate_y=Constants.SCREEN_HEIGHT // 3,
-        #         text_id='start_text_component',
-        #         text='START',
-        #         color=Constants.BLACK,
-        #         font=Constants.FONT,
-        #         font_size=Constants.LARGE_FONT_SIZE,
-        #         is_bold=True,
-        #     )
-
-        #     start_text_view.display(surface=self.window)
-
-        #     for event in pg.event.get():
-        #         if event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
-        #             running = False
-
-        #     pg.display.update()
-        #     self.clock.tick(Constants.FPS)
+        if self.is_playing_game_allowed:
+            self.show_battle_scene()
+        else:
+            self.show_restriction_warning_screen()

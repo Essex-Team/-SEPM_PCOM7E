@@ -20,3 +20,6 @@ class Constants:
     # Screen information
     SCREEN_WIDTH = 800
     SCREEN_HEIGHT = 600
+
+    # Game Settings
+    TIME_LIMIT_JSON_FILENAME = "time_limit.json"

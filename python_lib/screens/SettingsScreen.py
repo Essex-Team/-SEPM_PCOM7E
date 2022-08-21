@@ -1,7 +1,7 @@
 import pygame as pg
-from .Screen import Screen
 from python_lib.constants import Constants
 from python_lib.components.Texts import Texts
+from python_lib.screens.Screen import Screen
 from python_lib.screens.ParentControlScreen import ParentControlScreen
 
 class SettingsScreen(Screen):

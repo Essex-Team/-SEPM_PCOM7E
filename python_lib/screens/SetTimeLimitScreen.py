@@ -1,14 +1,12 @@
 import pygame as pg
 from datetime import datetime, timedelta
-from .Screen import Screen
 from python_lib.utils import Utils
 from python_lib.constants import Constants
+from python_lib.screens.Screen import Screen
 from python_lib.components.Texts import Texts
 from python_lib.components.Arrows import Arrows
 
 class SetTimeLimitScreen(Screen):
-
-    TIME_LIMIT_JSON_FILENAME = 'time_limit.json'
 
     def __init__(self, window: pg.surface.Surface, clock: pg.time.Clock):
         super().__init__(
@@ -36,7 +34,9 @@ class SetTimeLimitScreen(Screen):
             self.time_options.append((start + timedelta(seconds=i)).strftime("%H:%M"))
 
     def load_time_limit_from_json(self):
-        self.time_limit_form = Utils.loadContentFromJSON(SetTimeLimitScreen.TIME_LIMIT_JSON_FILENAME)
+        self.time_limit_form = Utils.loadContentFromJSON(
+            Utils.getAssetPath(f'configs/{Constants.TIME_LIMIT_JSON_FILENAME}'),
+        )
 
     def handle_save_time_limit_to_json(self):
         start_time = self.time_limit_form['start_time']
@@ -46,7 +46,10 @@ class SetTimeLimitScreen(Screen):
         end_time_idx = self.time_options.index(end_time)
 
         if start_time_idx < end_time_idx:
-            Utils.saveContentToJSON(SetTimeLimitScreen.TIME_LIMIT_JSON_FILENAME, self.time_limit_form)
+            Utils.saveContentToJSON(
+                Utils.getAssetPath(f'configs/{Constants.TIME_LIMIT_JSON_FILENAME}'),
+                self.time_limit_form,
+            )
 
     def get_next_available_option(self, current_selected_option, is_up=True):
         idx = self.time_options.index(current_selected_option)
@@ -192,7 +195,6 @@ class SetTimeLimitScreen(Screen):
                 end_time_up_arrow = Arrows(
                     coordinate_x=coordinate_x,
                     coordinate_y=coordinate_y,
-                    state='display',
                     arrow_id='end_time_up_arrow_component',
                     color=Constants.BLACK,
                     points=end_time_up_arrow_points,
@@ -209,7 +211,6 @@ class SetTimeLimitScreen(Screen):
                 end_time_down_arrow = Arrows(
                     coordinate_x=coordinate_x,
                     coordinate_y=coordinate_y,
-                    state='display',
                     arrow_id='end_time_down_arrow_component',
                     color=Constants.BLACK,
                     points=end_time_down_arrow_points,
@@ -220,7 +221,6 @@ class SetTimeLimitScreen(Screen):
             confirm_text_view = Texts(
                 coordinate_x=Constants.SCREEN_WIDTH // 2 - 200,
                 coordinate_y=Constants.SCREEN_HEIGHT - 180,
-                state='display',
                 text_id='confirm_text_component',
                 text='CONFIRM',
                 color=Constants.BLACK,
@@ -233,7 +233,6 @@ class SetTimeLimitScreen(Screen):
             cancel_text_view = Texts(
                 coordinate_x=Constants.SCREEN_WIDTH // 2 + 200,
                 coordinate_y=Constants.SCREEN_HEIGHT - 180,
-                state='display',
                 text_id='cancel_text_component',
                 text='CANCEL',
                 color=Constants.BLACK,
@@ -246,7 +245,6 @@ class SetTimeLimitScreen(Screen):
             footer = Texts(
                 coordinate_x=Constants.SCREEN_WIDTH // 2,
                 coordinate_y=Constants.SCREEN_HEIGHT - 100,
-                state='ready',
                 text_id='footer_text_component',
                 text='Team 1, Software Engineering Project Management @ 2022',
                 color=Constants.BLACK,

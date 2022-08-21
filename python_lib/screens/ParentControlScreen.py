@@ -1,7 +1,7 @@
 import pygame as pg
-from .Screen import Screen
 from python_lib.constants import Constants
 from python_lib.components.Texts import Texts
+from python_lib.screens.Screen import Screen
 from python_lib.screens.SetTimeLimitScreen import SetTimeLimitScreen
 
 class ParentControlScreen(Screen):
@@ -69,7 +69,6 @@ class ParentControlScreen(Screen):
             footer = Texts(
                 coordinate_x=Constants.SCREEN_WIDTH // 2,
                 coordinate_y=Constants.SCREEN_HEIGHT - 100,
-                state='ready',
                 text_id='footer_text_component',
                 text='Team 1, Software Engineering Project Management @ 2022',
                 color=Constants.BLACK,
