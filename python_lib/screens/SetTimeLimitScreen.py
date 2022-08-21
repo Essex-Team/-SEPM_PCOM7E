@@ -91,7 +91,6 @@ class SetTimeLimitScreen(Screen):
             set_time_limit_text_view = Texts(
                 coordinate_x=Constants.SCREEN_WIDTH // 2,
                 coordinate_y=Constants.SCREEN_HEIGHT // 3,
-                state='display',
                 text_id='set_time_limit_text_component',
                 text='SET TIME LIMIT',
                 color=Constants.BLACK,
@@ -105,7 +104,6 @@ class SetTimeLimitScreen(Screen):
             between_text_view = Texts(
                 coordinate_x=Constants.SCREEN_WIDTH // 2,
                 coordinate_y=Constants.SCREEN_HEIGHT - 300,
-                state='display',
                 text_id='between_text_component',
                 text='BETWEEN',
                 color=Constants.BLACK,
@@ -118,7 +116,6 @@ class SetTimeLimitScreen(Screen):
             start_time_text_view = Texts(
                 coordinate_x=Constants.SCREEN_WIDTH // 2 - 100,
                 coordinate_y=Constants.SCREEN_HEIGHT - 240,
-                state='display',
                 text_id='start_time_text_component',
                 text=self.time_limit_form['start_time'],
                 color=Constants.BLACK,
@@ -147,7 +144,6 @@ class SetTimeLimitScreen(Screen):
                 start_time_up_arrow = Arrows(
                     coordinate_x=coordinate_x,
                     coordinate_y=coordinate_y,
-                    state='display',
                     arrow_id='start_time_up_arrow_component',
                     color=Constants.BLACK,
                     points=start_time_up_arrow_points,
@@ -164,7 +160,6 @@ class SetTimeLimitScreen(Screen):
                 start_time_down_arrow = Arrows(
                     coordinate_x=coordinate_x,
                     coordinate_y=coordinate_y,
-                    state='display',
                     arrow_id='start_time_down_arrow_component',
                     color=Constants.BLACK,
                     points=start_time_down_arrow_points,
@@ -175,7 +170,6 @@ class SetTimeLimitScreen(Screen):
             end_time_text_view = Texts(
                 coordinate_x=Constants.SCREEN_WIDTH // 2 + 100,
                 coordinate_y=Constants.SCREEN_HEIGHT - 240,
-                state='display',
                 text_id='end_time_text_component',
                 text=self.time_limit_form['end_time'],
                 color=Constants.BLACK,

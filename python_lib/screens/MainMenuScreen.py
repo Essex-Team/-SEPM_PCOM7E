@@ -44,7 +44,6 @@ class MainMenuScreen(Screen):
             welcome_text_view = Texts(
                 coordinate_x=Constants.SCREEN_WIDTH // 2,
                 coordinate_y=Constants.SCREEN_HEIGHT // 3,
-                state='display',
                 text_id='welcome_text_component',
                 text='GAME TITLE',
                 color=Constants.BLACK,
@@ -58,7 +57,6 @@ class MainMenuScreen(Screen):
             start_text_view = Texts(
                 coordinate_x=Constants.SCREEN_WIDTH // 2,
                 coordinate_y=Constants.SCREEN_HEIGHT - 300,
-                state='ready',
                 text_id='start_text_component',
                 text='START',
                 color=Constants.BLACK,
@@ -72,7 +70,6 @@ class MainMenuScreen(Screen):
             settings_text_view = Texts(
                 coordinate_x=Constants.SCREEN_WIDTH // 2,
                 coordinate_y=Constants.SCREEN_HEIGHT - 260,
-                state='ready',
                 text_id='settings_text_component',
                 text='SETTINGS',
                 color=Constants.BLACK,
@@ -86,7 +83,6 @@ class MainMenuScreen(Screen):
             exit_text_view = Texts(
                 coordinate_x=Constants.SCREEN_WIDTH // 2,
                 coordinate_y=Constants.SCREEN_HEIGHT - 220,
-                state='ready',
                 text_id='exit_text_component',
                 text='EXIT',
                 color=Constants.BLACK,
@@ -100,7 +96,6 @@ class MainMenuScreen(Screen):
             footer = Texts(
                 coordinate_x=Constants.SCREEN_WIDTH // 2,
                 coordinate_y=Constants.SCREEN_HEIGHT - 100,
-                state='ready',
                 text_id='footer_text_component',
                 text='Team 1, Software Engineering Project Management @ 2022',
                 color=Constants.BLACK,

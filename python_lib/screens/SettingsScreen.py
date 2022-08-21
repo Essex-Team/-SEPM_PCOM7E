@@ -30,7 +30,6 @@ class SettingsScreen(Screen):
             settings_text_view = Texts(
                 coordinate_x=Constants.SCREEN_WIDTH // 2,
                 coordinate_y=Constants.SCREEN_HEIGHT // 3,
-                state='display',
                 text_id='settings_text_component',
                 text='SETTINGS',
                 color=Constants.BLACK,
@@ -44,7 +43,6 @@ class SettingsScreen(Screen):
             parent_control_text_view = Texts(
                 coordinate_x=Constants.SCREEN_WIDTH // 2,
                 coordinate_y=Constants.SCREEN_HEIGHT - 260,
-                state='ready',
                 text_id='parent_control_text_component',
                 text='PARENT CONTROL',
                 color=Constants.BLACK,
@@ -58,7 +56,6 @@ class SettingsScreen(Screen):
             back_to_main_text_view = Texts(
                 coordinate_x=Constants.SCREEN_WIDTH // 2,
                 coordinate_y=Constants.SCREEN_HEIGHT - 220,
-                state='ready',
                 text_id='back_to_main_text_component',
                 text='BACK TO MAIN MENU',
                 color=Constants.BLACK,
@@ -72,7 +69,6 @@ class SettingsScreen(Screen):
             footer = Texts(
                 coordinate_x=Constants.SCREEN_WIDTH // 2,
                 coordinate_y=Constants.SCREEN_HEIGHT - 100,
-                state='ready',
                 text_id='footer_text_component',
                 text='Team 1, Software Engineering Project Management @ 2022',
                 color=Constants.BLACK,

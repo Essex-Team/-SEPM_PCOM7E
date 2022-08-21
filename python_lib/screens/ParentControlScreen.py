@@ -30,7 +30,6 @@ class ParentControlScreen(Screen):
             parent_control_text_view = Texts(
                 coordinate_x=Constants.SCREEN_WIDTH // 2,
                 coordinate_y=Constants.SCREEN_HEIGHT // 3,
-                state='display',
                 text_id='parent_control_text_component',
                 text='PARENT CONTROL',
                 color=Constants.BLACK,
@@ -44,7 +43,6 @@ class ParentControlScreen(Screen):
             set_time_limit_text_view = Texts(
                 coordinate_x=Constants.SCREEN_WIDTH // 2,
                 coordinate_y=Constants.SCREEN_HEIGHT - 260,
-                state='ready',
                 text_id='set_time_limit_text_component',
                 text='SET TIME LIMIT',
                 color=Constants.BLACK,
@@ -58,7 +56,6 @@ class ParentControlScreen(Screen):
             back_to_settings_text_view = Texts(
                 coordinate_x=Constants.SCREEN_WIDTH // 2,
                 coordinate_y=Constants.SCREEN_HEIGHT - 220,
-                state='ready',
                 text_id='back_to_settings_text_component',
                 text='BACK TO MAIN SETTINGS',
                 color=Constants.BLACK,
