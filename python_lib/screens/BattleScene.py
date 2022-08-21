@@ -4,7 +4,7 @@ import types
 from python_lib.constants import Constants
 
 from python_lib.components.Buttons import Button
-from python_lib.components.GameObject import Character
+from python_lib.components.Character import Character
 from datetime import datetime
 
 # Define window size and title
