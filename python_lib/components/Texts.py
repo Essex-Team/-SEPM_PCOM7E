@@ -18,6 +18,7 @@ class Texts(GameObject):
         font: str=Constants.FONT,
         font_size: int=Constants.NORMAL_FONT_SIZE,
         is_bold: bool=False,
+        is_muted: bool=False,
         animations=None,
     ):
         super().__init__(coordinate_x=coordinate_x, coordinate_y=coordinate_y, animations=animations)
@@ -30,6 +31,7 @@ class Texts(GameObject):
         self.display_color = color
         self.on_click_event = on_click_event
         self.is_bold = is_bold
+        self.is_muted = is_muted
 
         self.clicked_sound = pg.mixer.Sound(Utils.getAssetPath("sounds/buttons/button_clicked.wav"))
         self.hovered_sound = pg.mixer.Sound(Utils.getAssetPath("sounds/buttons/button_hovered.wav"))
@@ -54,8 +56,8 @@ class Texts(GameObject):
         if self.text_rect.collidepoint(pg.mouse.get_pos()):
             self.is_previously_hovered = self.is_hovered
             self.is_hovered = True
-            if self.is_hovered and not self.is_previously_hovered:
-                    self.hovered_sound.play()
+            if self.is_hovered and not self.is_previously_hovered and not self.is_muted:
+                self.hovered_sound.play()
 
             if pg.mouse.get_pressed()[0] == 1 and self.is_clicked is False:
                 self.is_clicked = True
@@ -73,8 +75,10 @@ class Texts(GameObject):
             self.display_color = self.color
 
         if self.is_hovered and self.is_clicked:
+            if not self.is_muted:
+                self.clicked_sound.play()
+
             self.display_color = self.high_light_color
-            self.clicked_sound.play()
             self.action()
 
         text_surface = self.font.render(self.text, True, self.display_color)

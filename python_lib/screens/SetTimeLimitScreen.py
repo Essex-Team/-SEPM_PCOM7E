@@ -19,11 +19,13 @@ class SetTimeLimitScreen(Screen):
         self.is_running = True
         self.should_display_start_time_arrows = False
         self.should_display_end_time_arrows = False
+        self.is_indicator_sound_muted = False
         self.time_limit_form = {
             "start_time": "00:00",
             "end_time": "00:00",
         }
         self.load_time_limit_from_json()
+        self.load_indicator_sound_settings_from_json()
         self.generate_time_options()
 
     def exit(self):
@@ -49,6 +51,12 @@ class SetTimeLimitScreen(Screen):
         self.time_limit_form = Utils.loadContentFromJSON(
             Utils.getAssetPath(f'configs/{Constants.TIME_LIMIT_JSON_FILENAME}'),
         )
+
+    def load_indicator_sound_settings_from_json(self):
+        indicator_sound_settings = Utils.loadContentFromJSON(
+            Utils.getAssetPath(f'configs/{Constants.INDICATOR_SOUND_JSON_FILENAME}')
+        )
+        self.is_indicator_sound_muted = indicator_sound_settings['state'] is not True
 
     def handle_save_time_limit_to_json(self):
         start_time = self.time_limit_form['start_time']
@@ -111,6 +119,7 @@ class SetTimeLimitScreen(Screen):
             font=Constants.FONT,
             font_size=Constants.LARGE_FONT_SIZE,
             is_bold=True,
+            is_muted=self.is_indicator_sound_muted,
         )
 
         between_text_view = Texts(
@@ -121,6 +130,7 @@ class SetTimeLimitScreen(Screen):
             color=Constants.TEXT_COLOR,
             font=Constants.FONT,
             font_size=Constants.NORMAL_FONT_SIZE,
+            is_muted=self.is_indicator_sound_muted,
         )
 
         start_time_text_view = Texts(
@@ -133,6 +143,7 @@ class SetTimeLimitScreen(Screen):
             on_click_event=self.toggle_start_time_arrows,
             font=Constants.FONT,
             font_size=Constants.NORMAL_FONT_SIZE,
+            is_muted=self.is_indicator_sound_muted,
         )
 
         end_time_text_view = Texts(
@@ -145,6 +156,7 @@ class SetTimeLimitScreen(Screen):
             on_click_event=self.toggle_end_time_arrows,
             font=Constants.FONT,
             font_size=Constants.NORMAL_FONT_SIZE,
+            is_muted=self.is_indicator_sound_muted,
         )
 
         confirm_text_view = Texts(
@@ -157,6 +169,7 @@ class SetTimeLimitScreen(Screen):
             on_click_event=self.handle_on_confirm_click,
             font=Constants.FONT,
             font_size=Constants.NORMAL_FONT_SIZE,
+            is_muted=self.is_indicator_sound_muted,
         )
 
         cancel_text_view = Texts(
@@ -169,6 +182,7 @@ class SetTimeLimitScreen(Screen):
             on_click_event=self.handle_on_cancel_click,
             font=Constants.FONT,
             font_size=Constants.NORMAL_FONT_SIZE,
+            is_muted=self.is_indicator_sound_muted,
         )
 
         footer = Texts(
@@ -179,6 +193,7 @@ class SetTimeLimitScreen(Screen):
             color=Constants.TEXT_COLOR,
             font=Constants.FONT,
             font_size=Constants.SMALL_FONT_SIZE,
+            is_muted=self.is_indicator_sound_muted,
         )
 
         def _handle_start_time_up_arrow_click_event():
@@ -214,6 +229,7 @@ class SetTimeLimitScreen(Screen):
             high_light_color=Constants.TEXT_HIGH_LIGHT_COLOR,
             on_click_event=_handle_start_time_up_arrow_click_event,
             points=start_time_up_arrow_points,
+            is_muted=self.is_indicator_sound_muted,
         )
 
         start_time_down_arrow_points = [
@@ -230,6 +246,7 @@ class SetTimeLimitScreen(Screen):
             high_light_color=Constants.TEXT_HIGH_LIGHT_COLOR,
             on_click_event=_handle_start_time_down_arrow_click_event,
             points=start_time_down_arrow_points,
+            is_muted=self.is_indicator_sound_muted,
         )
 
         coordinate_x = Constants.SCREEN_WIDTH // 2 + 100
@@ -249,6 +266,7 @@ class SetTimeLimitScreen(Screen):
             high_light_color=Constants.TEXT_HIGH_LIGHT_COLOR,
             on_click_event=_handle_end_time_up_arrow_click_event,
             points=end_time_up_arrow_points,
+            is_muted=self.is_indicator_sound_muted,
         )
 
         end_time_down_arrow_points = [
@@ -265,6 +283,7 @@ class SetTimeLimitScreen(Screen):
             high_light_color=Constants.TEXT_HIGH_LIGHT_COLOR,
             on_click_event=_handle_end_time_down_arrow_click_event,
             points=end_time_down_arrow_points,
+            is_muted=self.is_indicator_sound_muted,
         )
 
         text_view_list = [

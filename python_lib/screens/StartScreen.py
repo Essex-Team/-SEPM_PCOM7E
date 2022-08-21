@@ -39,8 +39,6 @@ class StartScreen(Screen):
         start = datetime.datetime.strptime(start_time, '%H:%S').time()
         end = datetime.datetime.strptime(end_time, '%H:%S').time()
 
-        print(start)
-        print(end)
         return start <= current <= end
     
     def show_battle_scene(self):

@@ -15,11 +15,13 @@ class RestrictionWarningScreen(Screen):
             screen_height=Constants.SCREEN_HEIGHT,
         )
         self.is_running = True
+        self.is_indicator_sound_muted = False
         self.time_limit_settings = {
             "start_time": "00:00",
             "end_time": "00:00",
         }
         self.load_time_limit_from_json()
+        self.load_indicator_sound_settings_from_json()
 
     @property
     def warning_message(self) -> str:
@@ -31,6 +33,12 @@ class RestrictionWarningScreen(Screen):
         self.time_limit_form = Utils.loadContentFromJSON(
             Utils.getAssetPath(f'configs/{Constants.TIME_LIMIT_JSON_FILENAME}')
         )
+
+    def load_indicator_sound_settings_from_json(self):
+        indicator_sound_settings = Utils.loadContentFromJSON(
+            Utils.getAssetPath(f'configs/{Constants.INDICATOR_SOUND_JSON_FILENAME}')
+        )
+        self.is_indicator_sound_muted = indicator_sound_settings['state'] is not True
 
     def exit(self):
         self.is_running = False
@@ -45,6 +53,7 @@ class RestrictionWarningScreen(Screen):
             font=Constants.FONT,
             font_size=Constants.LARGE_FONT_SIZE,
             is_bold=True,
+            is_muted=self.is_indicator_sound_muted,
         )
 
         restricted_access_text_view = Texts(
@@ -56,6 +65,7 @@ class RestrictionWarningScreen(Screen):
             font=Constants.FONT,
             font_size=Constants.NORMAL_FONT_SIZE,
             is_bold=True,
+            is_muted=self.is_indicator_sound_muted,
         )
 
         time_restriction_text_view = Texts(
@@ -67,6 +77,7 @@ class RestrictionWarningScreen(Screen):
             font=Constants.FONT,
             font_size=Constants.NORMAL_FONT_SIZE,
             is_bold=True,
+            is_muted=self.is_indicator_sound_muted,
         )
 
         exit_text_view = Texts(
@@ -80,6 +91,7 @@ class RestrictionWarningScreen(Screen):
             font=Constants.FONT,
             font_size=Constants.NORMAL_FONT_SIZE,
             is_bold=True,
+            is_muted=self.is_indicator_sound_muted,
         )
 
         footer = Texts(
@@ -90,6 +102,7 @@ class RestrictionWarningScreen(Screen):
             color=Constants.TEXT_COLOR,
             font=Constants.FONT,
             font_size=Constants.SMALL_FONT_SIZE,
+            is_muted=self.is_indicator_sound_muted,
         )
 
         text_view_list = [

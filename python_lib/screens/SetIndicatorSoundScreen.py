@@ -17,6 +17,7 @@ class SetIndicatorSoundScreen(Screen):
         )
         self.is_running = True
         self.should_display_arrows = False
+        self.is_indicator_sound_muted = False
         self.indicator_sound_settings = {
             'state': True,
         }
@@ -36,6 +37,7 @@ class SetIndicatorSoundScreen(Screen):
         self.indicator_sound_settings = Utils.loadContentFromJSON(
             Utils.getAssetPath(f'configs/{Constants.INDICATOR_SOUND_JSON_FILENAME}'),
         )
+        self.is_indicator_sound_muted = self.indicator_sound_settings['state'] is not True
 
     def handle_save_time_limit_to_json(self):
         Utils.saveContentToJSON(
@@ -69,6 +71,7 @@ class SetIndicatorSoundScreen(Screen):
             font=Constants.FONT,
             font_size=Constants.LARGE_FONT_SIZE,
             is_bold=True,
+            is_muted=self.is_indicator_sound_muted,
         )
 
         is_enabled_text_view = Texts(
@@ -79,6 +82,7 @@ class SetIndicatorSoundScreen(Screen):
             color=Constants.TEXT_COLOR,
             font=Constants.FONT,
             font_size=Constants.NORMAL_FONT_SIZE,
+            is_muted=self.is_indicator_sound_muted,
         )
 
         current_state_text_view = Texts(
@@ -91,6 +95,7 @@ class SetIndicatorSoundScreen(Screen):
             on_click_event=self.toggle_arrows,
             font=Constants.FONT,
             font_size=Constants.NORMAL_FONT_SIZE,
+            is_muted=self.is_indicator_sound_muted,
         )
 
         confirm_text_view = Texts(
@@ -103,6 +108,7 @@ class SetIndicatorSoundScreen(Screen):
             on_click_event=self.handle_on_confirm_click,
             font=Constants.FONT,
             font_size=Constants.NORMAL_FONT_SIZE,
+            is_muted=self.is_indicator_sound_muted,
         )
 
         cancel_text_view = Texts(
@@ -115,6 +121,7 @@ class SetIndicatorSoundScreen(Screen):
             on_click_event=self.handle_on_cancel_click,
             font=Constants.FONT,
             font_size=Constants.NORMAL_FONT_SIZE,
+            is_muted=self.is_indicator_sound_muted,
         )
 
         footer = Texts(
@@ -125,6 +132,7 @@ class SetIndicatorSoundScreen(Screen):
             color=Constants.TEXT_COLOR,
             font=Constants.FONT,
             font_size=Constants.SMALL_FONT_SIZE,
+            is_muted=self.is_indicator_sound_muted,
         )
 
         def _handle_left_arrow_click_event():
@@ -152,6 +160,7 @@ class SetIndicatorSoundScreen(Screen):
             high_light_color=Constants.TEXT_HIGH_LIGHT_COLOR,
             on_click_event=_handle_left_arrow_click_event,
             points=left_arrow_points,
+            is_muted=self.is_indicator_sound_muted,
         )
 
         right_arrow_points = [
@@ -168,6 +177,7 @@ class SetIndicatorSoundScreen(Screen):
             high_light_color=Constants.TEXT_HIGH_LIGHT_COLOR,
             on_click_event=_handle_right_arrow_click_event,
             points=right_arrow_points,
+            is_muted=self.is_indicator_sound_muted,
         )
 
         text_view_list = [

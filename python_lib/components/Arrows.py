@@ -15,7 +15,8 @@ class Arrows(GameObject):
         color: Tuple[int, int, int],
         high_light_color: Tuple[int, int, int],
         points: Sequence[Union[Tuple[float, float], Sequence[float], Vector2]],
-        on_click_event: Callable = None,
+        on_click_event: Callable=None,
+        is_muted: bool=False,
         animations=None,
     ):
         super().__init__(coordinate_x=coordinate_x, coordinate_y=coordinate_y, animations=animations)
@@ -25,6 +26,7 @@ class Arrows(GameObject):
         self.display_color = self.color
         self.points = points
         self.on_click_event = on_click_event
+        self.is_muted = is_muted
 
         self.clicked_sound = pg.mixer.Sound(Utils.getAssetPath("sounds/buttons/button_clicked.wav"))
         self.hovered_sound = pg.mixer.Sound(Utils.getAssetPath("sounds/buttons/button_hovered.wav"))
@@ -43,7 +45,7 @@ class Arrows(GameObject):
         if self.arrow_rect.collidepoint(pg.mouse.get_pos()):
             self.is_previously_hovered = self.is_hovered
             self.is_hovered = True
-            if self.is_hovered and not self.is_previously_hovered:
+            if self.is_hovered and not self.is_previously_hovered and not self.is_muted:
                     self.hovered_sound.play()
 
             if pg.mouse.get_pressed()[0] == 1 and self.is_clicked is False:
@@ -62,8 +64,10 @@ class Arrows(GameObject):
             self.display_color = self.color
 
         if self.is_hovered and self.is_clicked:
+            if not self.is_muted:
+                self.clicked_sound.play()
+
             self.display_color = self.high_light_color
-            self.clicked_sound.play()
             self.action()
 
     def action(self):

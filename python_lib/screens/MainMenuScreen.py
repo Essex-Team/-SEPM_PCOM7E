@@ -1,5 +1,6 @@
 import sys
 import pygame as pg
+from python_lib.utils import Utils
 from python_lib.constants import Constants
 from python_lib.components.Texts import Texts
 from python_lib.screens.Screen import Screen
@@ -18,6 +19,14 @@ class MainMenuScreen(Screen):
         )
         self.window.fill(Constants.WHITE)
         self.is_running = True
+        self.is_indicator_sound_muted = False
+        self.load_indicator_sound_settings_from_json()
+
+    def load_indicator_sound_settings_from_json(self):
+        indicator_sound_settings = Utils.loadContentFromJSON(
+            Utils.getAssetPath(f'configs/{Constants.INDICATOR_SOUND_JSON_FILENAME}')
+        )
+        self.is_indicator_sound_muted = indicator_sound_settings['state'] is not True
 
     def show_start_screen(self):
         start_screen: StartScreen = StartScreen(
@@ -47,6 +56,7 @@ class MainMenuScreen(Screen):
             font=Constants.FONT,
             font_size=Constants.LARGE_FONT_SIZE,
             is_bold=True,
+            is_muted=self.is_indicator_sound_muted,
         )
 
         start_text_view = Texts(
@@ -60,6 +70,7 @@ class MainMenuScreen(Screen):
             font=Constants.FONT,
             font_size=Constants.NORMAL_FONT_SIZE,
             is_bold=True,
+            is_muted=self.is_indicator_sound_muted,
         )
 
         settings_text_view = Texts(
@@ -73,6 +84,7 @@ class MainMenuScreen(Screen):
             font=Constants.FONT,
             font_size=Constants.NORMAL_FONT_SIZE,
             is_bold=True,
+            is_muted=self.is_indicator_sound_muted,
         )
 
         exit_text_view = Texts(
@@ -86,6 +98,7 @@ class MainMenuScreen(Screen):
             font=Constants.FONT,
             font_size=Constants.NORMAL_FONT_SIZE,
             is_bold=True,
+            is_muted=self.is_indicator_sound_muted,
         )
 
         footer = Texts(
@@ -96,6 +109,7 @@ class MainMenuScreen(Screen):
             color=Constants.TEXT_COLOR,
             font=Constants.FONT,
             font_size=Constants.SMALL_FONT_SIZE,
+            is_muted=self.is_indicator_sound_muted,
         )
 
         text_view_list = [
