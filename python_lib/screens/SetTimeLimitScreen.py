@@ -1,3 +1,4 @@
+import i18n
 import pygame as pg
 from datetime import datetime, timedelta
 from python_lib.utils import Utils
@@ -12,7 +13,7 @@ class SetTimeLimitScreen(Screen):
         super().__init__(
             window=window,
             clock=clock,
-            screen_title='Set Time Limit',
+            screen_title=i18n.t('app.screens.setTimeLimit.title'),
             screen_width=Constants.SCREEN_WIDTH,
             screen_height=Constants.SCREEN_HEIGHT,
         )
@@ -114,7 +115,7 @@ class SetTimeLimitScreen(Screen):
             coordinate_x=Constants.SCREEN_WIDTH // 2,
             coordinate_y=Constants.SCREEN_HEIGHT // 3,
             text_id='set_time_limit_text_component',
-            text='SET TIME LIMIT',
+            text=i18n.t('app.screens.setTimeLimit.setTimeLimit'),
             color=Constants.TEXT_COLOR,
             font=Constants.FONT,
             font_size=Constants.LARGE_FONT_SIZE,
@@ -126,7 +127,7 @@ class SetTimeLimitScreen(Screen):
             coordinate_x=Constants.SCREEN_WIDTH // 2,
             coordinate_y=Constants.SCREEN_HEIGHT - 300,
             text_id='between_text_component',
-            text='BETWEEN',
+            text=i18n.t('app.screens.setTimeLimit.between'),
             color=Constants.TEXT_COLOR,
             font=Constants.FONT,
             font_size=Constants.NORMAL_FONT_SIZE,
@@ -163,7 +164,7 @@ class SetTimeLimitScreen(Screen):
             coordinate_x=Constants.SCREEN_WIDTH // 2 - 200,
             coordinate_y=Constants.SCREEN_HEIGHT - 180,
             text_id='confirm_text_component',
-            text='CONFIRM',
+            text=i18n.t('app.screens.setTimeLimit.confirm'),
             color=Constants.TEXT_COLOR,
             high_light_color=Constants.TEXT_HIGH_LIGHT_COLOR,
             on_click_event=self.handle_on_confirm_click,
@@ -176,7 +177,7 @@ class SetTimeLimitScreen(Screen):
             coordinate_x=Constants.SCREEN_WIDTH // 2 + 200,
             coordinate_y=Constants.SCREEN_HEIGHT - 180,
             text_id='cancel_text_component',
-            text='CANCEL',
+            text=i18n.t('app.screens.setTimeLimit.cancel'),
             color=Constants.TEXT_COLOR,
             high_light_color=Constants.TEXT_HIGH_LIGHT_COLOR,
             on_click_event=self.handle_on_cancel_click,
@@ -189,7 +190,7 @@ class SetTimeLimitScreen(Screen):
             coordinate_x=Constants.SCREEN_WIDTH // 2,
             coordinate_y=Constants.SCREEN_HEIGHT - 100,
             text_id='footer_text_component',
-            text='Team 1, Software Engineering Project Management @ 2022',
+            text=i18n.t('app.footer'),
             color=Constants.TEXT_COLOR,
             font=Constants.FONT,
             font_size=Constants.SMALL_FONT_SIZE,

@@ -1,3 +1,4 @@
+import i18n
 import pygame as pg
 from python_lib.utils import Utils
 from python_lib.constants import Constants
@@ -12,7 +13,7 @@ class SettingsScreen(Screen):
         super().__init__(
             window=window,
             clock=clock,
-            screen_title='Settings',
+            screen_title=i18n.t('app.screens.settings.title'),
             screen_width=Constants.SCREEN_WIDTH,
             screen_height=Constants.SCREEN_HEIGHT,
         )
@@ -48,7 +49,7 @@ class SettingsScreen(Screen):
             coordinate_x=Constants.SCREEN_WIDTH // 2,
             coordinate_y=Constants.SCREEN_HEIGHT // 3,
             text_id='settings_text_component',
-            text='SETTINGS',
+            text=i18n.t('app.screens.settings.settings'),
             color=Constants.TEXT_COLOR,
             font=Constants.FONT,
             font_size=Constants.LARGE_FONT_SIZE,
@@ -60,7 +61,7 @@ class SettingsScreen(Screen):
             coordinate_x=Constants.SCREEN_WIDTH // 2,
             coordinate_y=Constants.SCREEN_HEIGHT - 280,
             text_id='parent_control_text_component',
-            text='PARENT CONTROL',
+            text=i18n.t('app.screens.settings.parentControl'),
             color=Constants.TEXT_COLOR,
             high_light_color=Constants.TEXT_HIGH_LIGHT_COLOR,
             on_click_event=self.show_parent_control_screen,
@@ -74,7 +75,7 @@ class SettingsScreen(Screen):
             coordinate_x=Constants.SCREEN_WIDTH // 2,
             coordinate_y=Constants.SCREEN_HEIGHT - 240,
             text_id='setting_indicator_sound_text_component',
-            text='INDICATOR SOUND SETTINGS',
+            text=i18n.t('app.screens.settings.indicatorSoundSettings'),
             color=Constants.TEXT_COLOR,
             high_light_color=Constants.TEXT_HIGH_LIGHT_COLOR,
             on_click_event=self.show_setting_indicator_sound_screen,
@@ -88,7 +89,7 @@ class SettingsScreen(Screen):
             coordinate_x=Constants.SCREEN_WIDTH // 2,
             coordinate_y=Constants.SCREEN_HEIGHT - 200,
             text_id='back_to_main_text_component',
-            text='BACK TO MAIN MENU',
+            text=i18n.t('app.screens.settings.backToMainMenu'),
             color=Constants.TEXT_COLOR,
             high_light_color=Constants.TEXT_HIGH_LIGHT_COLOR,
             on_click_event=self.exit,
@@ -102,7 +103,7 @@ class SettingsScreen(Screen):
             coordinate_x=Constants.SCREEN_WIDTH // 2,
             coordinate_y=Constants.SCREEN_HEIGHT - 100,
             text_id='footer_text_component',
-            text='Team 1, Software Engineering Project Management @ 2022',
+            text=i18n.t('app.footer'),
             color=Constants.TEXT_COLOR,
             font=Constants.FONT,
             font_size=Constants.SMALL_FONT_SIZE,

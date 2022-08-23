@@ -1,0 +1,51 @@
+{
+    "en": {
+        "windowTitle": "Pygame Game",
+        "footer": "Team 1, Software Engineering Project Management @ 2022",
+        "screens": {
+            "mainMenu": {
+                "title": "Main",
+                "welcome": "GAME TITLE",
+                "start": "START",
+                "settings": "SETTINGS",
+                "exit": "EXIT"
+            },
+            "parentControl": {
+                "title": "Parent Control",
+                "welcome": "Parent Control",
+                "setTimeLimit": "SET TIME LIMIT",
+                "backToMainSettings": "BACK TO MAIN SETTINGS"
+            },
+            "restrictionWarning": {
+                "title": "Restriction Warning",
+                "warning": "WARNING",
+                "restrictedAccess": "RESTRICTED ACCESS",
+                "warningMessage": "Only access from %{start_time} to %{end_time} is allowed",
+                "exit": "EXIT"
+            },
+            "setIndicatorSound": {
+                "title": "Indicator Sound Settings",
+                "enabled": "ENABLED",
+                "disabled": "DISABLED",
+                "indicatorSoundSettings": "INDICATOR SOUND SETTINGS",
+                "isEnabled": "IS ENABLED",
+                "confirm": "CONFIRM",
+                "cancel": "CANCEL"
+            },
+            "setTimeLimit": {
+                "title": "Set Time Limit",
+                "setTimeLimit": "SET TIME LIMIT",
+                "between": "BETWEEN",
+                "confirm": "CONFIRM",
+                "cancel": "CANCEL"
+            },
+            "settings": {
+                "title": "Settings",
+                "settings": "SETTINGS",
+                "parentControl": "PARENT CONTROL",
+                "indicatorSoundSettings":"INDICATOR SOUND SETTINGS",
+                "backToMainMenu": "BACK TO MAIN MENU"
+            }
+        }
+    }
+}

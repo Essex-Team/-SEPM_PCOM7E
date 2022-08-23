@@ -1,3 +1,4 @@
+import i18n
 import pygame as pg
 from python_lib.utils import Utils
 from python_lib.constants import Constants
@@ -11,7 +12,7 @@ class ParentControlScreen(Screen):
         super().__init__(
             window=window,
             clock=clock,
-            screen_title='Parent Control',
+            screen_title=i18n.t('app.screens.parentControl.title'),
             screen_width=Constants.SCREEN_WIDTH,
             screen_height=Constants.SCREEN_HEIGHT,
         )
@@ -40,7 +41,7 @@ class ParentControlScreen(Screen):
             coordinate_x=Constants.SCREEN_WIDTH // 2,
             coordinate_y=Constants.SCREEN_HEIGHT // 3,
             text_id='parent_control_text_component',
-            text='PARENT CONTROL',
+            text=i18n.t('app.screens.parentControl.welcome'),
             color=Constants.TEXT_COLOR,
             high_light_color=Constants.TEXT_HIGH_LIGHT_COLOR,
             font=Constants.FONT,
@@ -53,7 +54,7 @@ class ParentControlScreen(Screen):
             coordinate_x=Constants.SCREEN_WIDTH // 2,
             coordinate_y=Constants.SCREEN_HEIGHT - 260,
             text_id='set_time_limit_text_component',
-            text='SET TIME LIMIT',
+            text=i18n.t('app.screens.parentControl.setTimeLimit'),
             color=Constants.TEXT_COLOR,
             high_light_color=Constants.TEXT_HIGH_LIGHT_COLOR,
             on_click_event=self.show_set_time_limit_screen,
@@ -67,7 +68,7 @@ class ParentControlScreen(Screen):
             coordinate_x=Constants.SCREEN_WIDTH // 2,
             coordinate_y=Constants.SCREEN_HEIGHT - 220,
             text_id='back_to_settings_text_component',
-            text='BACK TO MAIN SETTINGS',
+            text=i18n.t('app.screens.parentControl.backToMainSettings'),
             color=Constants.TEXT_COLOR,
             high_light_color=Constants.TEXT_HIGH_LIGHT_COLOR,
             on_click_event=self.exit,
@@ -81,7 +82,7 @@ class ParentControlScreen(Screen):
             coordinate_x=Constants.SCREEN_WIDTH // 2,
             coordinate_y=Constants.SCREEN_HEIGHT - 100,
             text_id='footer_text_component',
-            text='Team 1, Software Engineering Project Management @ 2022',
+            text=i18n.t('app.footer'),
             color=Constants.TEXT_COLOR,
             font=Constants.FONT,
             font_size=Constants.SMALL_FONT_SIZE,

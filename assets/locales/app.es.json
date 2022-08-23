@@ -1,0 +1,51 @@
+{
+    "es": {
+        "windowTitle": "Juego Pygame",
+        "footer": "Equipo 1, Gestión de proyectos de ingeniería de software @ 2022",
+         "screens": {
+            "mainMenu": {
+                "title": "Principal",
+                "welcome": "TÍTULO DEL JUEGO",
+                "start": "COMENZAR",
+                "settings": "AJUSTES",
+                "exit": "SALIR"
+            },
+            "parentControl": {
+                "title": "Control de padres",
+                "welcome": "Control de padres",
+                "setTimeLimit": "ESTABLECER LÍMITE DE TIEMPO",
+                "backToMainSettings": "VOLVER A LA CONFIGURACIÓN PRINCIPAL"
+            },
+            "restrictionWarning": {
+                "title": "Advertencia de restricción",
+                "warning": "ADVERTENCIA",
+                "restrictedAccess": "ACCESO RESTRINGIDO",
+                "warningMessage": "Solo se permite el acceso Desde %{start_time} hasta %{end_time}",
+                "exit": "SALIR"
+            },
+            "setIndicatorSound": {
+                "title": "Ajustes de sonido del indicador",
+                "enabled": "ACTIVADA",
+                "disabled": "DESACTIVADA",
+                "indicatorSoundSettings": "AJUSTES DEL SONIDO DEL INDICADOR",
+                "isEnabled": "ESTÁ HABILITADO",
+                "confirm": "CONFIRMAR",
+                "cancel": "CANCELAR"
+            },
+            "setTimeLimit": {
+                "title": "Establecer límite de tiempo",
+                "setTimeLimit": "ESTABLECER LÍMITE DE TIEMPO",
+                "between": "ENTRE",
+                "confirm": "CONFIRMAR",
+                "cancel": "CANCELAR"
+            },
+            "settings": {
+                "title": "Configuración",
+                "settings": "AJUSTES",
+                "parentControl": "CONTROL DE PADRES",
+                "indicatorSoundSettings":"AJUSTES DE SONIDO DEL INDICADOR",
+                "backToMainMenu": "VOLVER AL MENÚ PRINCIPAL"
+            }
+        }
+    }
+}

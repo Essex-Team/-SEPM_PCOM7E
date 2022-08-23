@@ -1,3 +1,4 @@
+import i18n
 import pygame as pg
 from python_lib.utils import Utils
 from python_lib.constants import Constants
@@ -11,7 +12,7 @@ class SetIndicatorSoundScreen(Screen):
         super().__init__(
             window=window,
             clock=clock,
-            screen_title='Indicator Sound Settings',
+            screen_title=i18n.t('app.screens.setIndicatorSound.title'),
             screen_width=Constants.SCREEN_WIDTH,
             screen_height=Constants.SCREEN_HEIGHT,
         )
@@ -26,9 +27,9 @@ class SetIndicatorSoundScreen(Screen):
     @property
     def current_state(self):
         if self.indicator_sound_settings['state']:
-            return 'ENABLED'
+            return i18n.t('app.screens.setIndicatorSound.enabled')
 
-        return 'DISABLED'
+        return i18n.t('app.screens.setIndicatorSound.disabled')
 
     def exit(self):
         self.is_running = False
@@ -66,7 +67,7 @@ class SetIndicatorSoundScreen(Screen):
             coordinate_x=Constants.SCREEN_WIDTH // 2,
             coordinate_y=Constants.SCREEN_HEIGHT // 3,
             text_id='indicator_sound_settings_text_component',
-            text='INDICATOR SOUND SETTINGS',
+            text=i18n.t('app.screens.setIndicatorSound.indicatorSoundSettings'),
             color=Constants.TEXT_COLOR,
             font=Constants.FONT,
             font_size=Constants.LARGE_FONT_SIZE,
@@ -78,7 +79,7 @@ class SetIndicatorSoundScreen(Screen):
             coordinate_x=Constants.SCREEN_WIDTH // 2 - 120,
             coordinate_y=Constants.SCREEN_HEIGHT - 240,
             text_id='is_enabled_text_component',
-            text='IS ENABLED',
+            text=i18n.t('app.screens.setIndicatorSound.isEnabled'),
             color=Constants.TEXT_COLOR,
             font=Constants.FONT,
             font_size=Constants.NORMAL_FONT_SIZE,
@@ -102,7 +103,7 @@ class SetIndicatorSoundScreen(Screen):
             coordinate_x=Constants.SCREEN_WIDTH // 2 - 200,
             coordinate_y=Constants.SCREEN_HEIGHT - 180,
             text_id='confirm_text_component',
-            text='CONFIRM',
+            text=i18n.t('app.screens.setIndicatorSound.confirm'),
             color=Constants.TEXT_COLOR,
             high_light_color=Constants.TEXT_HIGH_LIGHT_COLOR,
             on_click_event=self.handle_on_confirm_click,
@@ -115,7 +116,7 @@ class SetIndicatorSoundScreen(Screen):
             coordinate_x=Constants.SCREEN_WIDTH // 2 + 200,
             coordinate_y=Constants.SCREEN_HEIGHT - 180,
             text_id='cancel_text_component',
-            text='CANCEL',
+            text=i18n.t('app.screens.setIndicatorSound.cancel'),
             color=Constants.TEXT_COLOR,
             high_light_color=Constants.TEXT_HIGH_LIGHT_COLOR,
             on_click_event=self.handle_on_cancel_click,
@@ -128,7 +129,7 @@ class SetIndicatorSoundScreen(Screen):
             coordinate_x=Constants.SCREEN_WIDTH // 2,
             coordinate_y=Constants.SCREEN_HEIGHT - 100,
             text_id='footer_text_component',
-            text='Team 1, Software Engineering Project Management @ 2022',
+            text=i18n.t('app.footer'),
             color=Constants.TEXT_COLOR,
             font=Constants.FONT,
             font_size=Constants.SMALL_FONT_SIZE,

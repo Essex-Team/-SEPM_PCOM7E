@@ -1,3 +1,4 @@
+import i18n
 import pygame as pg
 from python_lib.utils import Utils
 from python_lib.constants import Constants
@@ -10,7 +11,7 @@ class RestrictionWarningScreen(Screen):
         super().__init__(
             window=window,
             clock=clock,
-            screen_title='Restriction Warning',
+            screen_title=i18n.t('app.screens.restrictionWarning.title'),
             screen_width=Constants.SCREEN_WIDTH,
             screen_height=Constants.SCREEN_HEIGHT,
         )
@@ -27,10 +28,14 @@ class RestrictionWarningScreen(Screen):
     def warning_message(self) -> str:
         start_time = self.time_limit_settings['start_time']
         end_time = self.time_limit_settings['end_time']
-        return f'Only access From {start_time} to {end_time} is allowed'
+        return i18n.t(
+            'app.screens.restrictionWarning.warningMessage',
+            start_time=start_time,
+            end_time=end_time,
+        )
 
     def load_time_limit_from_json(self):
-        self.time_limit_form = Utils.loadContentFromJSON(
+        self.time_limit_settings = Utils.loadContentFromJSON(
             Utils.getAssetPath(f'configs/{Constants.TIME_LIMIT_JSON_FILENAME}')
         )
 
@@ -48,7 +53,7 @@ class RestrictionWarningScreen(Screen):
             coordinate_x=Constants.SCREEN_WIDTH // 2,
             coordinate_y=Constants.SCREEN_HEIGHT // 3,
             text_id='warning_text_component',
-            text='WARNING',
+            text=i18n.t('app.screens.restrictionWarning.warning'),
             color=Constants.TEXT_COLOR,
             font=Constants.FONT,
             font_size=Constants.LARGE_FONT_SIZE,
@@ -60,7 +65,7 @@ class RestrictionWarningScreen(Screen):
             coordinate_x=Constants.SCREEN_WIDTH // 2,
             coordinate_y=Constants.SCREEN_HEIGHT // 3 + 60,
             text_id='restricted_access_text_component',
-            text='RESTRICTED ACCESS',
+            text=i18n.t('app.screens.restrictionWarning.restrictedAccess'),
             color=Constants.TEXT_COLOR,
             font=Constants.FONT,
             font_size=Constants.NORMAL_FONT_SIZE,
@@ -72,7 +77,12 @@ class RestrictionWarningScreen(Screen):
             coordinate_x=Constants.SCREEN_WIDTH // 2,
             coordinate_y=Constants.SCREEN_HEIGHT - 220,
             text_id='time_restriction_text_component',
-            text=self.warning_message,
+            # text=self.warning_message,
+            text=i18n.t(
+                'app.screens.restrictionWarning.warningMessage',
+                start_time=self.time_limit_settings['start_time'],
+                end_time=self.time_limit_settings['end_time'],
+            ),
             color=Constants.TEXT_COLOR,
             font=Constants.FONT,
             font_size=Constants.NORMAL_FONT_SIZE,
@@ -84,7 +94,7 @@ class RestrictionWarningScreen(Screen):
             coordinate_x=Constants.SCREEN_WIDTH // 2,
             coordinate_y=Constants.SCREEN_HEIGHT - 140,
             text_id='exit_text_component',
-            text='EXIT',
+            text=i18n.t('app.screens.restrictionWarning.exit'),
             color=Constants.TEXT_COLOR,
             high_light_color=Constants.TEXT_HIGH_LIGHT_COLOR,
             on_click_event=self.exit,
@@ -98,7 +108,7 @@ class RestrictionWarningScreen(Screen):
             coordinate_x=Constants.SCREEN_WIDTH // 2,
             coordinate_y=Constants.SCREEN_HEIGHT - 100,
             text_id='footer_text_component',
-            text='Team 1, Software Engineering Project Management @ 2022',
+            text=i18n.t('app.footer'),
             color=Constants.TEXT_COLOR,
             font=Constants.FONT,
             font_size=Constants.SMALL_FONT_SIZE,
