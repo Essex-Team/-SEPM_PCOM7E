@@ -23,6 +23,7 @@ class RestrictionWarningScreen(Screen):
         }
         self.load_time_limit_from_json()
         self.load_indicator_sound_settings_from_json()
+        self.load_language_settings_from_json()
 
     @property
     def warning_message(self) -> str:
@@ -44,6 +45,12 @@ class RestrictionWarningScreen(Screen):
             Utils.getAssetPath(f'configs/{Constants.INDICATOR_SOUND_JSON_FILENAME}')
         )
         self.is_indicator_sound_muted = indicator_sound_settings['state'] is not True
+
+    def load_language_settings_from_json(self):
+        language_settings = Utils.loadContentFromJSON(
+            Utils.getAssetPath(f'configs/{Constants.LANGUAGE_SETTINGS_JSON_FILENAME}')
+        )
+        i18n.set('locale', language_settings['locale'] or 'en')
 
     def exit(self):
         self.is_running = False

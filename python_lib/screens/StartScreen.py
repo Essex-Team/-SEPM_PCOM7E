@@ -1,3 +1,4 @@
+import i18n
 import datetime
 import pygame as pg
 from python_lib.utils import Utils
@@ -12,7 +13,7 @@ class StartScreen(Screen):
         super().__init__(
             window=window,
             clock=clock,
-            screen_title='Start',
+            screen_title=i18n.t('app.screens.start.title'),
             screen_width=Constants.SCREEN_WIDTH,
             screen_height=Constants.SCREEN_HEIGHT,
         )
@@ -21,11 +22,18 @@ class StartScreen(Screen):
             "end_time": "00:00",
         }
         self.load_time_limit_from_json()
+        self.load_language_settings_from_json()
 
     def load_time_limit_from_json(self):
         self.time_limit_settings = Utils.loadContentFromJSON(
             Utils.getAssetPath(f'configs/{Constants.TIME_LIMIT_JSON_FILENAME}')
         )
+
+    def load_language_settings_from_json(self):
+        language_settings = Utils.loadContentFromJSON(
+            Utils.getAssetPath(f'configs/{Constants.LANGUAGE_SETTINGS_JSON_FILENAME}')
+        )
+        i18n.set('locale', language_settings['locale'] or 'en')
 
     @property
     def is_playing_game_allowed(self) -> bool:

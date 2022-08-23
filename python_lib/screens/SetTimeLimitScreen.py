@@ -27,6 +27,7 @@ class SetTimeLimitScreen(Screen):
         }
         self.load_time_limit_from_json()
         self.load_indicator_sound_settings_from_json()
+        self.load_language_settings_from_json()
         self.generate_time_options()
 
     def exit(self):
@@ -58,6 +59,12 @@ class SetTimeLimitScreen(Screen):
             Utils.getAssetPath(f'configs/{Constants.INDICATOR_SOUND_JSON_FILENAME}')
         )
         self.is_indicator_sound_muted = indicator_sound_settings['state'] is not True
+
+    def load_language_settings_from_json(self):
+        language_settings = Utils.loadContentFromJSON(
+            Utils.getAssetPath(f'configs/{Constants.LANGUAGE_SETTINGS_JSON_FILENAME}')
+        )
+        i18n.set('locale', language_settings['locale'] or 'en')
 
     def handle_save_time_limit_to_json(self):
         start_time = self.time_limit_form['start_time']

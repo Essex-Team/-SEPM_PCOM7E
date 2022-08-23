@@ -23,6 +23,9 @@
                 "warningMessage": "Solo se permite el acceso Desde %{start_time} hasta %{end_time}",
                 "exit": "SALIR"
             },
+            "start": {
+                "title": "Comenzar"
+            },
             "setIndicatorSound": {
                 "title": "Ajustes de sonido del indicador",
                 "enabled": "ACTIVADA",
@@ -39,11 +42,21 @@
                 "confirm": "CONFIRMAR",
                 "cancel": "CANCELAR"
             },
+            "setLanguage": {
+                "title": "Elegir lenguaje",
+                "en": "English",
+                "es": "Española",
+                "languageSettings": "ELEGIR LENGUAJE",
+                "language": "IDIOMA",
+                "confirm": "CONFIRMAR",
+                "cancel": "CANCELAR"
+            },
             "settings": {
                 "title": "Configuración",
                 "settings": "AJUSTES",
                 "parentControl": "CONTROL DE PADRES",
                 "indicatorSoundSettings":"AJUSTES DE SONIDO DEL INDICADOR",
+                "language": "AJUSTES DE IDIOMA",
                 "backToMainMenu": "VOLVER AL MENÚ PRINCIPAL"
             }
         }

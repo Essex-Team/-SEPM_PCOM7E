@@ -23,6 +23,9 @@
                 "warningMessage": "Only access from %{start_time} to %{end_time} is allowed",
                 "exit": "EXIT"
             },
+            "start": {
+                "title": "Start"
+            },
             "setIndicatorSound": {
                 "title": "Indicator Sound Settings",
                 "enabled": "ENABLED",
@@ -39,11 +42,21 @@
                 "confirm": "CONFIRM",
                 "cancel": "CANCEL"
             },
+            "setLanguage": {
+                "title": "Set Language",
+                "en": "English",
+                "es": "Española",
+                "languageSettings": "SET LANGUAGE",
+                "language": "LANGUAGE",
+                "confirm": "CONFIRM",
+                "cancel": "CANCEL"
+            },
             "settings": {
                 "title": "Settings",
                 "settings": "SETTINGS",
                 "parentControl": "PARENT CONTROL",
                 "indicatorSoundSettings":"INDICATOR SOUND SETTINGS",
+                "language": "LANGUAGE SETTINGS",
                 "backToMainMenu": "BACK TO MAIN MENU"
             }
         }

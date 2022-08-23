@@ -6,55 +6,58 @@ from python_lib.components.Texts import Texts
 from python_lib.components.Arrows import Arrows
 from python_lib.screens.Screen import Screen
 
-class SetIndicatorSoundScreen(Screen):
+class SetLanguageScreen(Screen):
 
     def __init__(self, window: pg.surface.Surface, clock: pg.time.Clock):
         super().__init__(
             window=window,
             clock=clock,
-            screen_title=i18n.t('app.screens.setIndicatorSound.title'),
+            screen_title=i18n.t('app.screens.setLanguage.title'),
             screen_width=Constants.SCREEN_WIDTH,
             screen_height=Constants.SCREEN_HEIGHT,
         )
         self.is_running = True
         self.should_display_arrows = False
         self.is_indicator_sound_muted = False
-        self.indicator_sound_settings = {
-            'state': True,
+        self.language_settings = {
+            'locale': "en",
         }
-        self.load_indicator_sound_settings_from_json()
         self.load_language_settings_from_json()
+        self.load_indicator_sound_settings_from_json()
 
     @property
-    def current_state(self):
-        if self.indicator_sound_settings['state']:
-            return i18n.t('app.screens.setIndicatorSound.enabled')
+    def current_locale(self):
+        if self.language_settings['locale']:
+            if self.language_settings['locale'] == 'en':
+                return i18n.t('app.screens.setLanguage.en')
+            else:
+                return i18n.t('app.screens.setLanguage.es')
 
-        return i18n.t('app.screens.setIndicatorSound.disabled')
+        return i18n.t('app.screens.setLanguage.en')
 
     def exit(self):
         self.is_running = False
 
     def load_indicator_sound_settings_from_json(self):
-        self.indicator_sound_settings = Utils.loadContentFromJSON(
-            Utils.getAssetPath(f'configs/{Constants.INDICATOR_SOUND_JSON_FILENAME}'),
+        indicator_sound_settings = Utils.loadContentFromJSON(
+            Utils.getAssetPath(f'configs/{Constants.INDICATOR_SOUND_JSON_FILENAME}')
         )
-        self.is_indicator_sound_muted = self.indicator_sound_settings['state'] is not True
+        self.is_indicator_sound_muted = indicator_sound_settings['state'] is not True
 
     def load_language_settings_from_json(self):
-        language_settings = Utils.loadContentFromJSON(
-            Utils.getAssetPath(f'configs/{Constants.LANGUAGE_SETTINGS_JSON_FILENAME}')
+        self.language_settings = Utils.loadContentFromJSON(
+            Utils.getAssetPath(f'configs/{Constants.LANGUAGE_SETTINGS_JSON_FILENAME}'),
         )
-        i18n.set('locale', language_settings['locale'] or 'en')
 
-    def handle_save_time_limit_to_json(self):
+    def handle_save_language_settings_to_json(self):
         Utils.saveContentToJSON(
-            Utils.getAssetPath(f'configs/{Constants.INDICATOR_SOUND_JSON_FILENAME}'),
-            self.indicator_sound_settings,
+            Utils.getAssetPath(f'configs/{Constants.LANGUAGE_SETTINGS_JSON_FILENAME}'),
+            self.language_settings,
         )
 
     def handle_on_confirm_click(self):
-        self.handle_save_time_limit_to_json()
+        self.handle_save_language_settings_to_json()
+        i18n.set('locale', self.language_settings['locale'])
         self.exit()
 
     def handle_on_cancel_click(self):
@@ -63,18 +66,21 @@ class SetIndicatorSoundScreen(Screen):
     def toggle_arrows(self):
         self.should_display_arrows = not self.should_display_arrows
 
+    def get_next_locale_option(self):
+        return 'es' if self.language_settings['locale'] == 'en' else 'en'
+
     def handle_left_arrow_click(self):
-        self.indicator_sound_settings['state'] = not self.indicator_sound_settings['state']
+        self.language_settings['locale'] = self.get_next_locale_option()
     
     def handle_right_arrow_click(self):
-        self.indicator_sound_settings['state'] = not self.indicator_sound_settings['state']
+        self.language_settings['locale'] = self.get_next_locale_option()
 
     def display(self):
-        indicator_sound_settings_text_view = Texts(
+        language_settings_text_view = Texts(
             coordinate_x=Constants.SCREEN_WIDTH // 2,
             coordinate_y=Constants.SCREEN_HEIGHT // 3,
-            text_id='indicator_sound_settings_text_component',
-            text=i18n.t('app.screens.setIndicatorSound.indicatorSoundSettings'),
+            text_id='language_settings_text_component',
+            text=i18n.t('app.screens.setLanguage.languageSettings'),
             color=Constants.TEXT_COLOR,
             font=Constants.FONT,
             font_size=Constants.LARGE_FONT_SIZE,
@@ -82,22 +88,22 @@ class SetIndicatorSoundScreen(Screen):
             is_muted=self.is_indicator_sound_muted,
         )
 
-        is_enabled_text_view = Texts(
+        locale_text_view = Texts(
             coordinate_x=Constants.SCREEN_WIDTH // 2 - 120,
             coordinate_y=Constants.SCREEN_HEIGHT - 240,
-            text_id='is_enabled_text_component',
-            text=i18n.t('app.screens.setIndicatorSound.isEnabled'),
+            text_id='current_locale_text_component',
+            text=i18n.t('app.screens.setLanguage.language'),
             color=Constants.TEXT_COLOR,
             font=Constants.FONT,
             font_size=Constants.NORMAL_FONT_SIZE,
             is_muted=self.is_indicator_sound_muted,
         )
 
-        current_state_text_view = Texts(
+        current_locale_text_view = Texts(
             coordinate_x=Constants.SCREEN_WIDTH // 2 + 120,
             coordinate_y=Constants.SCREEN_HEIGHT - 240,
-            text_id='current_state_text_component',
-            text=self.current_state,
+            text_id='current_locale_text_component',
+            text=self.current_locale,
             color=Constants.TEXT_COLOR,
             high_light_color=Constants.TEXT_HIGH_LIGHT_COLOR,
             on_click_event=self.toggle_arrows,
@@ -110,7 +116,7 @@ class SetIndicatorSoundScreen(Screen):
             coordinate_x=Constants.SCREEN_WIDTH // 2 - 200,
             coordinate_y=Constants.SCREEN_HEIGHT - 180,
             text_id='confirm_text_component',
-            text=i18n.t('app.screens.setIndicatorSound.confirm'),
+            text=i18n.t('app.screens.setLanguage.confirm'),
             color=Constants.TEXT_COLOR,
             high_light_color=Constants.TEXT_HIGH_LIGHT_COLOR,
             on_click_event=self.handle_on_confirm_click,
@@ -123,7 +129,7 @@ class SetIndicatorSoundScreen(Screen):
             coordinate_x=Constants.SCREEN_WIDTH // 2 + 200,
             coordinate_y=Constants.SCREEN_HEIGHT - 180,
             text_id='cancel_text_component',
-            text=i18n.t('app.screens.setIndicatorSound.cancel'),
+            text=i18n.t('app.screens.setLanguage.cancel'),
             color=Constants.TEXT_COLOR,
             high_light_color=Constants.TEXT_HIGH_LIGHT_COLOR,
             on_click_event=self.handle_on_cancel_click,
@@ -145,11 +151,11 @@ class SetIndicatorSoundScreen(Screen):
 
         def _handle_left_arrow_click_event():
             self.handle_left_arrow_click()
-            current_state_text_view.text = self.current_state
+            current_locale_text_view.text = self.current_locale
 
         def _handle_right_arrow_click_event():
             self.handle_right_arrow_click()
-            current_state_text_view.text = self.current_state
+            current_locale_text_view.text = self.current_locale
 
         coordinate_x = Constants.SCREEN_WIDTH // 2 + 40
         coordinate_y = Constants.SCREEN_HEIGHT - 240
@@ -189,9 +195,9 @@ class SetIndicatorSoundScreen(Screen):
         )
 
         text_view_list = [
-            indicator_sound_settings_text_view,
-            is_enabled_text_view,
-            current_state_text_view,
+            language_settings_text_view,
+            locale_text_view,
+            current_locale_text_view,
             confirm_text_view,
             cancel_text_view,
             footer,

@@ -19,12 +19,19 @@ class ParentControlScreen(Screen):
         self.is_running = True
         self.is_indicator_sound_muted = False
         self.load_indicator_sound_settings_from_json()
+        self.load_language_settings_from_json()
 
     def load_indicator_sound_settings_from_json(self):
         indicator_sound_settings = Utils.loadContentFromJSON(
             Utils.getAssetPath(f'configs/{Constants.INDICATOR_SOUND_JSON_FILENAME}')
         )
         self.is_indicator_sound_muted = indicator_sound_settings['state'] is not True
+    
+    def load_language_settings_from_json(self):
+        language_settings = Utils.loadContentFromJSON(
+            Utils.getAssetPath(f'configs/{Constants.LANGUAGE_SETTINGS_JSON_FILENAME}')
+        )
+        i18n.set('locale', language_settings['locale'] or 'en')
     
     def show_set_time_limit_screen(self):
         set_time_limit_screen: SetTimeLimitScreen = SetTimeLimitScreen(
