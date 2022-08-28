@@ -353,16 +353,6 @@ class BattleScene(Screen):
             # window.fill(0)
             self.window.fill(Constants.WHITE)
 
-            if self.engine.is_player_turn:
-                text = "Player's Turn"
-            else:
-                text = "Enemy's Turn"
-
-            # Turn information text
-            # turn_text = self.font.render(text, True, Constants.BLACK)
-            # textRect = turn_text.get_rect()
-            # textRect.center = (Constants.SCREEN_WIDTH / 2, Constants.SCREEN_HEIGHT / 18)
-
             # Player's health text
             player_health_text = self.font.render("Player: " + str(self.engine.player_health), True, Constants.BLACK)
             player_health_text_rect = player_health_text.get_rect()
@@ -388,6 +378,15 @@ class BattleScene(Screen):
 
                 done = True
 
+            if done is True:
+                pg.display.update()
+                self.engine.update()
+                pg.time.Clock().tick(30)
+                pg.mixer.music.stop()
+
+                time.sleep(3)
+
+            # Receive Inputs and Do the Respective Actions
             events = pg.key.get_pressed()
             if events[pg.K_a]:
                 self.odd.do_after_is_pressed()
@@ -398,14 +397,7 @@ class BattleScene(Screen):
             elif events[pg.K_f]:
                 self.low.do_after_is_pressed()
 
-            if done is True:
-                pg.display.update()
-                self.engine.update()
-                pg.time.Clock().tick(30)
-                pg.mixer.music.stop()
-
-                time.sleep(3)
-
+            # Check the calculation result and update the game state
             if self.engine.player_is_correct is True:
                 self.player.current_animations.stop()
                 self.enemy.current_animations.stop()
@@ -452,13 +444,10 @@ class BattleScene(Screen):
             for i in self.characters:
                 i.draw(self.window)
 
-            # Update game state
-            # Draw game state
-            # self.window.blit(turn_text, textRect)
+            # Draw the game state to screen
             self.window.blit(player_health_text, player_health_text_rect)
             self.window.blit(enemy_health_text, enemy_health_text_rect)
 
-            # Dice roll result
             if self.dice_rolled is not None:
                 dice_rolled_text = self.font.render("Dice: " + self.dice_rolled, True, Constants.BLACK)
                 dice_rolled_text_rect = dice_rolled_text.get_rect()
@@ -480,16 +469,13 @@ class BattleScene(Screen):
             if self.enemy_choices is not None:
                 enemy_choices_text = self.font.render("Enemy: " + self.enemy_choices, True, Constants.BLACK)
                 enemy_choices_text_rect = enemy_choices_text.get_rect()
-                # enemy_choices_text_rect.topright = (
-                #     ((Constants.SCREEN_WIDTH - 100) / 8) + (((Constants.SCREEN_HEIGHT - 100) / 6) * 3) - 25,
-                #     450
-                # )
                 enemy_choices_text_rect.center = (
                     (Constants.SCREEN_WIDTH / 2) + 250,
                     450
                 )
                 self.window.blit(enemy_choices_text, enemy_choices_text_rect)
 
+            # Update the user's display to reflect the changes
             pg.display.update()
             self.engine.update()
             pg.time.Clock().tick(30)
