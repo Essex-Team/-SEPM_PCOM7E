@@ -1,7 +1,8 @@
 import random
 import pygame as pg
-from datetime import datetime
+import time
 
+from datetime import datetime
 from python_lib.utils import Utils
 from python_lib.constants import Constants
 from python_lib.screens.Screen import Screen
@@ -34,6 +35,10 @@ class Engine:
 class BattleScene(Screen):
 
     def __init__(self, window: pg.surface.Surface, clock: pg.time.Clock):
+        self.dice_rolled = None
+        self.player_choices = None
+        self.enemy_choices = None
+
         super().__init__(
             window=window,
             clock=clock,
@@ -45,6 +50,10 @@ class BattleScene(Screen):
     
     def initializeGame(self):
         self.font = pg.font.Font(Utils.getAssetPath('fonts/pixel/PixelEmulator-xq08.ttf'), Constants.EXTRA_SMALL_FONT_SIZE)
+
+        pg.mixer.music.load(Utils.getAssetPath('sounds/music/Ludum_Dare _8_-_Track_4.wav'))
+        pg.mixer.music.set_volume(0.05)
+        pg.mixer.music.play()
 
         # Battle Button
         self.battle_buttons = pg.sprite.Group()
@@ -255,6 +264,7 @@ class BattleScene(Screen):
         tier_2 = ['odd', 'even', 'high', 'low']
         correct = False
         self.engine.player_choice = choices
+        self.player_choices = choices
 
         self.engine.there_was_an_event = True
 
@@ -263,24 +273,34 @@ class BattleScene(Screen):
         self.engine.dice_2 = random.randint(1, 6)
         self.engine.dice_sum = self.engine.dice_1 + self.engine.dice_2
 
+        self.dice_rolled = str(self.engine.dice_sum)
+
         is_even = True if self.engine.dice_sum % 2 == 0 else False
         is_odd = True if self.engine.dice_sum % 2 == 1 else False
         is_lowest = True if self.engine.dice_sum in [i for i in range(1, 7)] else False
         is_highest = True if self.engine.dice_sum in [i for i in range(7, 13)] else False
 
+        print(
+            "is_even: ", is_even, "\n"
+            "is_odd: ", is_odd, "\n"
+            "is_lowest: ", is_lowest, "\n"
+            "is_highest: ", is_highest, "\n"
+        )
+
         # Check player choices
         if (is_even and choices == 'even') or \
                 (is_odd and choices == 'odd') or \
-                (is_lowest and choices == 'lowest') or \
-                (is_highest and choices == 'highest'):
+                (is_lowest and choices == 'low') or \
+                (is_highest and choices == 'high'):
             self.engine.player_is_correct = True
 
         # Check enemy choices
-        enemy_choice = random.choice(['even', 'odd', 'lower', 'highest'])
+        enemy_choice = random.choice(['even', 'odd', 'low', 'high'])
+        self.enemy_choices = enemy_choice
         if (is_even and enemy_choice == 'even') or \
                 (is_odd and enemy_choice == 'odd') or \
-                (is_lowest and enemy_choice == 'lowest') or \
-                (is_highest and enemy_choice == 'highest'):
+                (is_lowest and enemy_choice == 'low') or \
+                (is_highest and enemy_choice == 'high'):
             self.engine.enemy_is_correct = True
 
         # Combine player and enemy result
@@ -297,15 +317,28 @@ class BattleScene(Screen):
         for i in self.battle_buttons:
             i.is_visible = True
 
+        #
+        # if self.engine.player_is_correct:
+        #     print("Correct!")
+        # else:
+        #     print("Incorrect!")
+
+        text = None
         if self.engine.player_is_correct:
-            print("Correct!")
+            text = "Player is correct!"
         else:
-            print("Incorrect!")
+            text = "Player is incorrect!"
+
+        if self.engine.enemy_is_correct:
+            text = text + " Enemy is correct!"
+        else:
+            text = text + " Enemy is incorrect!"
+
+        print(text)
 
         self.engine.is_player_turn = not self.engine.is_player_turn
 
         return crit_bonus
-
 
     def display(self):
         # Loop pygame state until user quits
@@ -326,9 +359,9 @@ class BattleScene(Screen):
                 text = "Enemy's Turn"
 
             # Turn information text
-            turn_text = self.font.render(text, True, Constants.BLACK)
-            textRect = turn_text.get_rect()
-            textRect.center = (Constants.SCREEN_WIDTH / 2, Constants.SCREEN_HEIGHT / 18)
+            # turn_text = self.font.render(text, True, Constants.BLACK)
+            # textRect = turn_text.get_rect()
+            # textRect.center = (Constants.SCREEN_WIDTH / 2, Constants.SCREEN_HEIGHT / 18)
 
             # Player's health text
             player_health_text = self.font.render("Player: " + str(self.engine.player_health), True, Constants.BLACK)
@@ -339,6 +372,29 @@ class BattleScene(Screen):
             enemy_health_text = self.font.render("Enemy: " + str(self.engine.enemy_health), True, Constants.BLACK)
             enemy_health_text_rect = enemy_health_text.get_rect()
             enemy_health_text_rect.topright = (Constants.SCREEN_WIDTH / 4 * 3, Constants.SCREEN_HEIGHT / 15)
+
+            if self.engine.enemy_health <= 0 or self.engine.player_health <= 0:
+                if self.engine.enemy_health <= 0 or self.engine.enemy_health < self.engine.player_health:
+                    announcement_text = self.font.render("Player Win!", True, Constants.BLACK)
+                else:
+                    announcement_text = self.font.render("Enemy Win!", True, Constants.BLACK)
+
+                announcement_text_rect = announcement_text.get_rect()
+                announcement_text_rect.center = (
+                    Constants.SCREEN_WIDTH / 2,
+                    550
+                )
+                self.window.blit(announcement_text, announcement_text_rect)
+
+                done = True
+
+            if done is True:
+                pg.display.update()
+                self.engine.update()
+                pg.time.Clock().tick(30)
+                pg.mixer.music.stop()
+
+                time.sleep(3)
 
             if self.engine.player_is_correct is True:
                 self.player.current_animations.stop()
@@ -388,12 +444,42 @@ class BattleScene(Screen):
 
             # Update game state
             # Draw game state
-            self.window.blit(turn_text, textRect)
+            # self.window.blit(turn_text, textRect)
             self.window.blit(player_health_text, player_health_text_rect)
             self.window.blit(enemy_health_text, enemy_health_text_rect)
+
+            # Dice roll result
+            if self.dice_rolled is not None:
+                dice_rolled_text = self.font.render("Dice: " + self.dice_rolled, True, Constants.BLACK)
+                dice_rolled_text_rect = dice_rolled_text.get_rect()
+                dice_rolled_text_rect.center = (
+                    (Constants.SCREEN_WIDTH / 2) - 250,
+                    450
+                )
+                self.window.blit(dice_rolled_text, dice_rolled_text_rect)
+
+            if self.player_choices is not None:
+                player_choices_text = self.font.render("Player: " + self.player_choices, True, Constants.BLACK)
+                player_choices_text_rect = player_choices_text.get_rect()
+                player_choices_text_rect.center = (
+                    Constants.SCREEN_WIDTH / 2,
+                    450
+                )
+                self.window.blit(player_choices_text, player_choices_text_rect)
+
+            if self.enemy_choices is not None:
+                enemy_choices_text = self.font.render("Enemy: " + self.enemy_choices, True, Constants.BLACK)
+                enemy_choices_text_rect = enemy_choices_text.get_rect()
+                # enemy_choices_text_rect.topright = (
+                #     ((Constants.SCREEN_WIDTH - 100) / 8) + (((Constants.SCREEN_HEIGHT - 100) / 6) * 3) - 25,
+                #     450
+                # )
+                enemy_choices_text_rect.center = (
+                    (Constants.SCREEN_WIDTH / 2) + 250,
+                    450
+                )
+                self.window.blit(enemy_choices_text, enemy_choices_text_rect)
+
             pg.display.update()
             self.engine.update()
             pg.time.Clock().tick(30)
-
-            if self.engine.enemy_health <= 0 or self.engine.player_health <= 0:
-                done = True
