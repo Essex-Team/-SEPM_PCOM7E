@@ -53,7 +53,7 @@ class BattleScene(Screen):
 
         pg.mixer.music.load(Utils.getAssetPath('sounds/music/Ludum_Dare _8_-_Track_4.wav'))
         pg.mixer.music.set_volume(0.05)
-        pg.mixer.music.play()
+        pg.mixer.music.play(loops=-1)
 
         # Battle Button
         self.battle_buttons = pg.sprite.Group()
