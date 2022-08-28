@@ -67,6 +67,7 @@ class Button(pg.sprite.Sprite):
         surface.blit(self.image, (self.rect.x, self.rect.y))
 
     def action(self):
+
         if len(self.show_after_is_pressed) > 0:
             for i in self.show_after_is_pressed:
                 i.is_visible = True

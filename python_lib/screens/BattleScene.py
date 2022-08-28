@@ -51,17 +51,20 @@ class BattleScene(Screen):
         self.characters = pg.sprite.Group()
 
         # Battle Buttons Graphic
-        self.odd_even = Button(
-            button_id="odd_even",
-            image_list={
-                "basic": pg.image.load(Utils.getAssetPath("images/buttons/odd_even_button.png")),
-                "hovered": pg.image.load(Utils.getAssetPath("images/buttons/odd_even_button_hovered.png")),
-                "clicked": pg.image.load(Utils.getAssetPath("images/buttons/odd_even_button_clicked.png"))
-            },
-            x=150,
-            y=380,
-            scale=0.5
-        )
+        # Odd Even Group
+        # self.odd_even = Button(
+        #     button_id="odd_even",
+        #     image_list={
+        #         "basic": pg.image.load(Utils.getAssetPath("images/buttons/odd_even_button.png")),
+        #         "hovered": pg.image.load(Utils.getAssetPath("images/buttons/odd_even_button_hovered.png")),
+        #         "clicked": pg.image.load(Utils.getAssetPath("images/buttons/odd_even_button_clicked.png"))
+        #     },
+        #     x=150,
+        #     y=380,
+        #     scale=0.5
+        # )
+
+        screen_width, screen_height = pg.display.get_surface().get_size()
 
         self.odd = Button(
             button_id="odd",
@@ -70,12 +73,12 @@ class BattleScene(Screen):
                 "hovered": pg.image.load(Utils.getAssetPath("images/buttons/odd_hovered.png")),
                 "clicked": pg.image.load(Utils.getAssetPath("images/buttons/odd_clicked.png"))
             },
-            x=250,
+            x=((screen_width - 100)/8) + (((screen_width - 100)/6) * 1) - 25,
             y=380,
             scale=0.5
         )
-        self.odd.is_visible = False
-        self.odd_even.show_after_is_pressed.append(self.odd)
+        # self.odd.is_visible = True
+        # self.odd_even.show_after_is_pressed.append(self.odd)
 
         self.even = Button(
             button_id="even",
@@ -84,16 +87,61 @@ class BattleScene(Screen):
                 "hovered": pg.image.load(Utils.getAssetPath("images/buttons/even_hovered.png")),
                 "clicked": pg.image.load(Utils.getAssetPath("images/buttons/even_clicked.png"))
             },
-            x=500,
+            x=((screen_width - 100)/8) + (((screen_width - 100)/6) * 2) - 25,
             y=380,
             scale=0.5
         )
-        self.even.is_visible = False
-        self.odd_even.show_after_is_pressed.append(self.even)
+        # self.even.is_visible = False
+        # self.odd_even.show_after_is_pressed.append(self.even)
 
-        self.battle_buttons.add(self.odd_even)
+        # High Low Group
+        # self.high_low = Button(
+        #     button_id="high_low",
+        #     image_list={
+        #         "basic": pg.image.load(Utils.getAssetPath("images/buttons/high_low.png")),
+        #         "hovered": pg.image.load(Utils.getAssetPath("images/buttons/high_low_hovered.png")),
+        #         "clicked": pg.image.load(Utils.getAssetPath("images/buttons/high_low_clicked.png"))
+        #     },
+        #     x=500,
+        #     y=380,
+        #     scale=0.5
+        # )
+
+        self.high = Button(
+            button_id="high",
+            image_list={
+                "basic": pg.image.load(Utils.getAssetPath("images/buttons/high.png")),
+                "hovered": pg.image.load(Utils.getAssetPath("images/buttons/high_hovered.png")),
+                "clicked": pg.image.load(Utils.getAssetPath("images/buttons/high_clicked.png"))
+            },
+            x=((screen_width - 100)/8) + (((screen_width - 100)/6) * 3) - 25,
+            y=380,
+            scale=0.5
+        )
+        # self.high.is_visible = False
+        # self.high_low.show_after_is_pressed.append(self.high)
+
+        self.low = Button(
+            button_id="low",
+            image_list={
+                "basic": pg.image.load(Utils.getAssetPath("images/buttons/low.png")),
+                "hovered": pg.image.load(Utils.getAssetPath("images/buttons/low_hovered.png")),
+                "clicked": pg.image.load(Utils.getAssetPath("images/buttons/low_clicked.png"))
+            },
+            x=((screen_width - 100)/8) + (((screen_width - 100)/6) * 4) - 25,
+            y=380,
+            scale=0.5
+        )
+        # self.low.is_visible = False
+        # self.high_low.show_after_is_pressed.append(self.low)
+
+        # self.battle_buttons.add(self.odd_even)
         self.battle_buttons.add(self.odd)
         self.battle_buttons.add(self.even)
+
+        # self.battle_buttons.add(self.high_low)
+        self.battle_buttons.add(self.low)
+        self.battle_buttons.add(self.high)
 
         # Characters
         self.player = Character(
@@ -195,14 +243,16 @@ class BattleScene(Screen):
 
         self.odd.assign_callback(self.calculate_bet)
         self.even.assign_callback(self.calculate_bet)
+        self.high.assign_callback(self.calculate_bet)
+        self.low.assign_callback(self.calculate_bet)
 
         # To time event
         self.time_of_event = None
 
     def calculate_bet(self, choices):
         # Button Depth
-        tier_1 = ['odd_even']
-        tier_2 = ['odd', 'even']
+        tier_1 = ['odd_even', 'high_low']
+        tier_2 = ['odd', 'even', 'high', 'low']
         correct = False
         self.engine.player_choice = choices
 
@@ -245,10 +295,7 @@ class BattleScene(Screen):
                 self.engine.player_health -= 10
 
         for i in self.battle_buttons:
-            if i.button_id in tier_1:
-                i.is_visible = True
-            else:
-                i.is_visible = False
+            i.is_visible = True
 
         if self.engine.player_is_correct:
             print("Correct!")
