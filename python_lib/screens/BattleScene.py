@@ -52,7 +52,7 @@ class BattleScene(Screen):
         self.font = pg.font.Font(Utils.getAssetPath('fonts/pixel/PixelEmulator-xq08.ttf'), Constants.EXTRA_SMALL_FONT_SIZE)
 
         pg.mixer.music.load(Utils.getAssetPath('sounds/music/Ludum_Dare _8_-_Track_4.wav'))
-        pg.mixer.music.set_volume(0.05)
+        pg.mixer.music.set_volume(0.01)
         pg.mixer.music.play(loops=-1)
 
         # Battle Button
@@ -387,6 +387,16 @@ class BattleScene(Screen):
                 self.window.blit(announcement_text, announcement_text_rect)
 
                 done = True
+
+            events = pg.key.get_pressed()
+            if events[pg.K_a]:
+                self.odd.do_after_is_pressed()
+            elif events[pg.K_s]:
+                self.even.do_after_is_pressed()
+            elif events[pg.K_d]:
+                self.high.do_after_is_pressed()
+            elif events[pg.K_f]:
+                self.low.do_after_is_pressed()
 
             if done is True:
                 pg.display.update()
